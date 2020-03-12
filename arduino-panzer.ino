@@ -21,17 +21,11 @@
 /* Others */
 #define BAUD_RATE       57600
 #define JOYSTICK_MIDDLE 127
+#define RANGE_255       255
 /*********************************************************************************************************************/
 int error = 0;
 int type = 0;
 int vibrate = 0;
-
-unsigned char XRaw = 0;
-unsigned char YRaw = 0;
-int XMap = 0;
-int YMap = 0;
-int computedLeft = 0;
-int computedRight = 0;
 
 int fPivYLimit = 32;
 DifferentialSteering diffSteer(fPivYLimit);
@@ -60,8 +54,9 @@ void TB_disableMotors() {
     digitalWrite(TB_STBY, LOW);
 }
 
-void TB_move(int computedLeft, int computedRight) {
+void TBMove (int computedLeft, int computedRight) {
 
+    TB_enableMotors();
     digitalWrite(TB_AIN1, (computedLeft  < 0) ? LOW  : HIGH);
     digitalWrite(TB_AIN2, (computedLeft  < 0) ? HIGH : LOW);
     digitalWrite(TB_BIN1, (computedRight < 0) ? HIGH : LOW);
@@ -72,9 +67,28 @@ void TB_move(int computedLeft, int computedRight) {
     analogWrite(TB_PWMB, pwmr);
 
     Serial.print("["); Serial.print(computedLeft, DEC); Serial.print(","); Serial.print(computedRight, DEC); Serial.print("]");
-    if (computedLeft  < 0) Serial.print("[leftMotor reverse]");  else Serial.print("[leftMotor forward]");
-    if (computedRight < 0) Serial.print("[rightMotor reverse]"); else Serial.print("[rightMotor forward]");
+    if (computedLeft  < 0) Serial.print("[leftMotor reverse]"); else if (computedLeft == 0) Serial.print("[leftMotor idle]"); else Serial.print("[leftMotor forward]");
+    if (computedRight < 0) Serial.print("[rightMotor reverse]"); else if (computedRight == 0) Serial.print("[rightMotor idle]"); else Serial.print("[rightMotor forward]");
     Serial.print("["); Serial.print(pwml, DEC); Serial.print(","); Serial.print(pwmr, DEC); Serial.print("]");
+}
+
+void TBAnalogMove(byte XRaw, byte YRaw) {
+
+    Serial.print("[");Serial.print(XRaw, DEC); Serial.print(","); Serial.print(YRaw, DEC); Serial.print("]");
+    int XMap = map(XRaw, 0, 255, -127, 127);
+    int YMap = map(YRaw, 0, 255, 127, -127);
+    Serial.print("[");Serial.print(XMap, DEC); Serial.print(","); Serial.print(YMap, DEC); Serial.print("]");
+    if(XRaw != 128 || YRaw != 128) {
+        diffSteer.computeMotors(XMap, YMap);
+        TBMove(diffSteer.computedLeftMotor(), diffSteer.computedRightMotor());
+    }
+}
+
+void TBPadMove(byte PadUp, byte PadDown, byte PadLeft, byte PadRight) {
+    if (PadUp)          TBMove( 95,  95);   // 95 is 75% of 127
+    else if (PadDown)   TBMove(-95, -95);
+    else if (PadLeft)   TBMove(  0,  95);
+    else if (PadRight)  TBMove( 95,   0);
 }
 /*********************************************************************************************************************/
 void setup() {
@@ -95,14 +109,10 @@ void setup() {
     type = ps2x.readType();
     Serial.print("PS2X type: "); Serial.println(type);
     switch(type) {
-        case 0:
-            Serial.print("Unknown Controller type found "); break;
-        case 1:
-            Serial.print("DualShock Controller found "); break;
-        case 2:
-            Serial.print("GuitarHero Controller found "); break;
-        case 3:
-            Serial.print("Wireless Sony DualShock Controller found "); break;
+        case 0: Serial.print("Unknown Controller type found "); break;
+        case 1: Serial.print("DualShock Controller found "); break;
+        case 2: Serial.print("GuitarHero Controller found "); break;
+        case 3: Serial.print("Wireless Sony DualShock Controller found "); break;
     }
 }
 /*********************************************************************************************************************/
@@ -111,18 +121,13 @@ void loop() {
         return;
 
     ps2x.read_gamepad(); //read controller and set large motor to spin at 'vibrate' speed
-    XRaw = ps2x.Analog(PSS_LX);
-    YRaw = ps2x.Analog(PSS_LY);
-    Serial.print("[");Serial.print(XRaw, DEC); Serial.print(","); Serial.print(YRaw, DEC); Serial.print("]");
-    XMap = map(XRaw, 0, 255, -127, 127);
-    YMap = map(YRaw, 0, 255, 127, -127);
-    Serial.print("[");Serial.print(XMap, DEC); Serial.print(","); Serial.print(YMap, DEC); Serial.print("]");
-    if(XRaw != 128 || YRaw != 128) {
-        diffSteer.computeMotors(XMap, YMap);
-        computedLeft = diffSteer.computedLeftMotor();
-        computedRight = diffSteer.computedRightMotor();
-        TB_enableMotors();
-        TB_move(computedLeft, computedRight);
+    if(ps2x.Button(PSB_L1)) {
+        //XRaw = ps2x.Analog(PSS_LX);
+        //YRaw = ps2x.Analog(PSS_LY);
+        TBAnalogMove(ps2x.Analog(PSS_LX), ps2x.Analog(PSS_LY));
+    }
+    else if (ps2x.Button(PSB_PAD_UP) || ps2x.Button(PSB_PAD_RIGHT) || ps2x.Button(PSB_PAD_LEFT) || ps2x.Button(PSB_PAD_DOWN) ) {
+        TBPadMove(ps2x.Analog(PSAB_PAD_UP), ps2x.Analog(PSAB_PAD_DOWN), ps2x.Analog(PSAB_PAD_LEFT), ps2x.Analog(PSAB_PAD_RIGHT));
     }
     else {
         TB_disableMotors();
