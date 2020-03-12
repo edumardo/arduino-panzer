@@ -2,6 +2,8 @@
 
 Because buying one was too easy, better build and program it yourself!
 
+This project aims to control a RC tank using a programmable board, arduino, and implement the main features of other commercial products such as Heng Long, Toro or Taigen: classic movement, turret rotation, gun elevation, sound, smoke, lights etc.
+
 ## Parts
 
 1 x Heng Long chassis with gearbox
