@@ -21,7 +21,7 @@
 /* Others */
 #define BAUD_RATE       57600
 #define JOYSTICK_MIDDLE 127
-#define RANGE_255       255
+#define PAD_FIXED_SPEED 90          // 95 is 75% of 127
 /*********************************************************************************************************************/
 int error = 0;
 int type = 0;
@@ -88,10 +88,11 @@ void TBAnalogMove(byte XRaw, byte YRaw) {
 }
 
 void TBPadMove(byte PadUp, byte PadDown, byte PadLeft, byte PadRight) {
-    if (PadUp)          TBMove( 95,  95);   // 95 is 75% of 127
-    else if (PadDown)   TBMove(-95, -95);
-    else if (PadLeft)   TBMove(  0,  95);
-    else if (PadRight)  TBMove( 95,   0);
+
+    if (PadUp)          TBMove(PAD_FIXED_SPEED, PAD_FIXED_SPEED);
+    else if (PadDown)   TBMove(-PAD_FIXED_SPEED, -PAD_FIXED_SPEED);
+    else if (PadLeft)   TBMove(0,  PAD_FIXED_SPEED);
+    else if (PadRight)  TBMove(PAD_FIXED_SPEED, 0);
 }
 /*********************************************************************************************************************/
 void setup() {
