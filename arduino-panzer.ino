@@ -82,6 +82,9 @@ void TBAnalogMove(byte XRaw, byte YRaw) {
         diffSteer.computeMotors(XMap, YMap);
         TBMove(diffSteer.computedLeftMotor(), diffSteer.computedRightMotor());
     }
+    else {
+        TB_disableMotors();
+    }
 }
 
 void TBPadMove(byte PadUp, byte PadDown, byte PadLeft, byte PadRight) {
@@ -122,8 +125,6 @@ void loop() {
 
     ps2x.read_gamepad(); //read controller and set large motor to spin at 'vibrate' speed
     if(ps2x.Button(PSB_L1)) {
-        //XRaw = ps2x.Analog(PSS_LX);
-        //YRaw = ps2x.Analog(PSS_LY);
         TBAnalogMove(ps2x.Analog(PSS_LX), ps2x.Analog(PSS_LY));
     }
     else if (ps2x.Button(PSB_PAD_UP) || ps2x.Button(PSB_PAD_RIGHT) || ps2x.Button(PSB_PAD_LEFT) || ps2x.Button(PSB_PAD_DOWN) ) {
