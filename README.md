@@ -16,3 +16,7 @@ This project aims to control a RC tank using a programmable board, arduino, and 
 
 * [DifferentialSteering](https://github.com/edumardo/DifferentialSteering)
 * [PS2X_lib](https://github.com/madsci1016/Arduino-PS2X)
+
+## Wiring diagram
+
+![Wiring diagram](images/wiring-diagram.png)
