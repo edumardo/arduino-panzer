@@ -6,16 +6,34 @@ This project aims to control a RC tank using a programmable board, arduino, and 
 
 ## Parts
 
-1 x Heng Long chassis with gearbox
+Currently I have a heng long chassis with gearbox (2 DC motors), and I control it with a bluetooth ps2 controller and a TB6612FNG driver. See the wiring-diagram for more details.
 
-1 x Arduino uno
+Hardware:
 
-1 x PS2 controller
+* 1 x Arduino uno.
+* 1 x TB6612FNG.
+* 1 x Heng Long chassis with gearbox (2 DC motors).
+* 1 x PS2 controller (bluetooth is not necessary).
+* 1 x battery (I'm using a 14.5V 2.15Ah from a robot vacuum cleaner).
+* 1 x 9V battery for arduino standalone power.
+* A lot of jumper wires.
 
 ## Dependencies
 
 * [DifferentialSteering](https://github.com/edumardo/DifferentialSteering)
 * [PS2X_lib](https://github.com/madsci1016/Arduino-PS2X)
+
+## Features
+
+| Feature | Description | Status |
+|---------|-------------|--------|
+| PS2 Pad control | | Done |
+| PS2 left analog stick control | | Done|
+| Turret rotation | | Pending hardware |
+| Gun elevation | | Pending hardware |
+| Smoke unit | | Pending |
+| Sounds | | Pending |
+| MG firing | | Pending hardware |
 
 ## Wiring diagram
 
