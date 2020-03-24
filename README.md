@@ -33,7 +33,8 @@ Hardware:
 | Gun elevation | | Pending hardware |
 | Smoke unit | | Pending |
 | Sounds | | Pending |
-| MG firing | | Pending hardware |
+| Hull MG firing sound | | Pending |
+| Hull MG firing led | | In progress |
 
 ## Wiring diagram
 
