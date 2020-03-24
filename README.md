@@ -27,14 +27,14 @@ Hardware:
 
 | Feature | Status | Description |
 |---------|-------------|--------|
-| PS2 Pad control | Done | |
-| PS2 left analog stick control | Done| |
-| Turret rotation | Pending hardware | |
-| Gun elevation | Pending hardware | |
-| Smoke unit | Pending | |
-| Sounds | Pending | |
-| Hull MG firing sound | Pending | |
-| Hull MG firing led | In progress | |
+| PS2 Pad control | ✔️ Done | |
+| PS2 left analog stick control | ✔️ Done | |
+| Turret rotation | ⚠️🛰 Pending hardware | |
+| Gun elevation | ⚠️🛰 Pending hardware | |
+| Smoke unit | ⚠️ Pending | |
+| Sounds | ⚠️ Pending | |
+| Hull MG firing sound | ⚠️ Pending | |
+| Hull MG firing led | ⚙️ In progress | |
 
 ## Wiring diagram
 
