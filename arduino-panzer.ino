@@ -18,6 +18,9 @@
 #define TB_BIN2         7
 #define TB_PWMB         9
 
+/* Led hull MG pin */
+#define LED_HULLMG_PIN  A2
+
 /* Others */
 #define BAUD_RATE       57600
 #define JOYSTICK_MIDDLE 127
@@ -30,6 +33,10 @@ int vibrate = 0;
 int fPivYLimit = 32;
 DifferentialSteering diffSteer(fPivYLimit);
 PS2X ps2x;
+
+byte ledHullMGState = LOW;
+unsigned long ledHullMGpreviousMillis = 0;
+const byte ledHullMGInterval = 100;
 /*********************************************************************************************************************/
 void TB_begin() {
 
@@ -40,6 +47,7 @@ void TB_begin() {
     pinMode(TB_BIN1, OUTPUT);
     pinMode(TB_BIN2, OUTPUT);
     pinMode(TB_PWMB, OUTPUT);
+    pinMode(LED_HULLMG_PIN, OUTPUT);
 }
 
 void TB_enableMotors() {
@@ -125,6 +133,27 @@ void loop() {
         return;
 
     ps2x.read_gamepad(); //read controller and set large motor to spin at 'vibrate' speed
+
+    unsigned long currentMillis = millis();
+    if (ps2x.Button(PSB_R2)) {
+        unsigned long currentMillis = millis();
+        if (currentMillis - ledHullMGpreviousMillis >= ledHullMGInterval) {
+            ledHullMGpreviousMillis = currentMillis;
+
+            // if the LED is off turn it on and vice-versa:
+            if (ledHullMGState == LOW) {
+                ledHullMGState = HIGH;
+            } else {
+                ledHullMGState = LOW;
+            }
+
+            digitalWrite(LED_HULLMG_PIN, ledHullMGState);
+        }
+    }
+    if (!ps2x.Button(PSB_R2)) {
+        digitalWrite(LED_HULLMG_PIN, LOW);
+    }
+
     if(ps2x.Button(PSB_L1)) {
         TBAnalogMove(ps2x.Analog(PSS_LX), ps2x.Analog(PSS_LY));
     }
