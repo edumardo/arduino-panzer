@@ -1,28 +1,8 @@
 #include <PS2X_lib.h>
 #include "DifferentialSteering.h"
+#include "src/main.h"
 /*********************************************************************************************************************/
-/* PS2 pins */
-#define PS2_PIN_DAT     12
-#define PS2_PIN_CMD     11
-#define PS2_PIN_SEL     10
-#define PS2_PIN_CLK     13
-#define PS2_PRESSURES   true
-#define PS2_RUMBLE      true
-
-/* TB6612FNG pins */
-#define TB_PWMA         3
-#define TB_AIN2         2
-#define TB_AIN1         4
-#define TB_STBY         5
-#define TB_BIN1         6
-#define TB_BIN2         7
-#define TB_PWMB         9
-
-/* Led hull MG pin */
-#define LED_HULLMG_PIN  A2
-
 /* Others */
-#define BAUD_RATE       57600
 #define JOYSTICK_MIDDLE 127
 #define PAD_FIXED_SPEED 90          // 95 is 75% of 127
 /*********************************************************************************************************************/
@@ -36,7 +16,7 @@ PS2X ps2x;
 
 byte ledHullMGState = LOW;
 unsigned long ledHullMGpreviousMillis = 0;
-const byte ledHullMGInterval = 100;
+
 /*********************************************************************************************************************/
 void TB_begin() {
 
@@ -137,7 +117,7 @@ void loop() {
     unsigned long currentMillis = millis();
     if (ps2x.Button(PSB_R2)) {
         unsigned long currentMillis = millis();
-        if (currentMillis - ledHullMGpreviousMillis >= ledHullMGInterval) {
+        if (currentMillis - ledHullMGpreviousMillis >= LED_HULLMG_INTERVAL) {
             ledHullMGpreviousMillis = currentMillis;
 
             // if the LED is off turn it on and vice-versa:
