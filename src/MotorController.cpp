@@ -3,8 +3,7 @@
 /**
  *
  */
-MotorController::MotorController()
-    : m_diffSteer(PIVOT_Y_LIMIT) {
+MotorController::MotorController() {
 
 }
 
@@ -14,6 +13,7 @@ MotorController::MotorController()
 void MotorController::begin(bool debug_mode) {
 
     m_debug_mode = debug_mode;
+    m_diffSteer.begin(PIVOT_Y_LIMIT);
     pinMode(TB_PWMA, OUTPUT);
     pinMode(TB_AIN2, OUTPUT);
     pinMode(TB_AIN1, OUTPUT);
