@@ -2,12 +2,8 @@
 #include "DifferentialSteering.h"
 #include "src/main.h"
 /*********************************************************************************************************************/
-/* Others */
-#define JOYSTICK_MIDDLE 127
-#define PAD_FIXED_SPEED 90          // 95 is 75% of 127
-
 /* Debug mode */
-#define MOTORCONTROLLER_DEBUG false
+#define MOTORCONTROLLER_DEBUG true
 /*********************************************************************************************************************/
 int error = 0;
 int type = 0;
@@ -72,7 +68,7 @@ void loop() {
         digitalWrite(LED_HULLMG_PIN, LOW);
     }
 
-    if(ps2x.Button(PSB_L1)) {
+    if(ps2x.Analog(PSS_LX) != PS2_MIDDLE_VALUE || ps2x.Analog(PSS_LY) != PS2_MIDDLE_VALUE) {
         motorController.analogMove(ps2x.Analog(PSS_LX), ps2x.Analog(PSS_LY));
     }
     else if (ps2x.Button(PSB_PAD_UP) || ps2x.Button(PSB_PAD_RIGHT) || ps2x.Button(PSB_PAD_LEFT) || ps2x.Button(PSB_PAD_DOWN) ) {
