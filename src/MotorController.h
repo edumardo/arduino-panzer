@@ -15,12 +15,11 @@ class MotorController {
         DifferentialSteering m_diffSteer;
         bool m_debug_mode;
         void move(int leftMotor, int rightMotor);
-        void printXY(byte x, byte y);
+        void printXY(int x, int y);
 
     public:
         MotorController();
         void begin(bool debug_mode);
-        /* Inputs [0,255] from ps2*/
         void analogMove(byte x, byte y);
         void padMove(byte padUp, byte padDown, byte padLeft, byte padRight);
         void standby(bool standby);

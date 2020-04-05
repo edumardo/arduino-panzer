@@ -126,7 +126,7 @@ void MotorController::standby(bool standby) {
  * @param x: x value to print.
  * @param y: y value to print.
  */
-void MotorController::printXY(byte x, byte y) {
+void MotorController::printXY(int x, int y) {
     Serial.print("[");
     Serial.print(x, DEC);
     Serial.print(",");
