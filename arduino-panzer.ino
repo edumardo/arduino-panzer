@@ -2,9 +2,6 @@
 #include "DifferentialSteering.h"
 #include "src/main.h"
 /*********************************************************************************************************************/
-/* Debug mode */
-#define MOTORCONTROLLER_DEBUG true
-/*********************************************************************************************************************/
 int error = 0;
 int type = 0;
 int vibrate = 0;
@@ -20,7 +17,11 @@ void setup() {
     Serial.begin(BAUD_RATE);
     Serial.println("Inicializamos Serial");
 
-    motorController.begin(MOTORCONTROLLER_DEBUG);
+    motorController.begin(true,     // debug pinMode
+                          0,        // lowest value of the transmitter
+                          255,      // highest value of the transmitter
+                          true      // Y-axis decreases when I push forward
+                          );
 
     pinMode(LED_HULLMG_PIN, OUTPUT);
 

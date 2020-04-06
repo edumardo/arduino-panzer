@@ -8,14 +8,20 @@ MotorController::MotorController() {
 }
 
 /**
- * Initialize pins and the differential steering object, and turn off motors.
+ * Initialize pins, interval values of the controller, and the direcction of Y axis.
  * Pins are defined in pinout.h
  *
- * @param debug_mode: true to enable serial.print, false otherwise.
+ * @param debugMode: true to enable serial.print, false otherwise.
+ * @param stickMinValue: lowest value of the controller.
+ * @param stickMaxValue: highest value of the controller.
+ * @param invertYAxis: true if you want to invert Y axis, i.e., if you push forward the stick Y value decreases.
  */
-void MotorController::begin(bool debugMode) {
+void MotorController::begin(bool debugMode, int stickMinValue, int stickMaxValue, bool invertYAxis) {
 
     m_debugMode = debugMode;
+    m_stickMinValue = stickMinValue;
+    m_stickMaxValue = stickMaxValue;
+    m_invertYAxis = invertYAxis;
     m_diffSteer.begin(PIVOT_Y_LIMIT);
 
     pinMode(TB_PWMA, OUTPUT);
@@ -29,9 +35,20 @@ void MotorController::begin(bool debugMode) {
 
 /**
  * Use differential steering to move the tank with [x,y] values, i.e., an analog stick.
+ * Moving is from idle position [stickMinValue / 2, stickMaxValue / 2]. Yoy have to call this method when you detect
+ * movement in your stick.
+ * 
+ * ps2 controller example: 
+ *      controller interval : [0,255]
+ *      idle position       : [128,128]
+ *      analogMove(128,   0): Y axis decreases when push forward.
+ *      analogMove(128, 255): Y axis increases when push back.
+ *      analogMove(255, 128): stick to right.
+ *      analogMove(  0, 128): stick to left.
+ * 
  *
- * @param x: value of x axis, [0,255].
- * @param y: value of y axis, [0,255].
+ * @param x: value of x axis, interval set on begin().
+ * @param y: value of y axis, interval set on begin().
  */
 void MotorController::analogMove(int x, int y) {
 
@@ -40,16 +57,16 @@ void MotorController::analogMove(int x, int y) {
     // From PS2 range to DifferentialSteering Range.
     m_diffSteer.computeMotors(
         map(x,
-            PS2_MIN_VALUE,
-            PS2_MAX_VALUE,
+            m_stickMinValue,
+            m_stickMaxValue,
             -diffSteerComputeRange,
             diffSteerComputeRange)
         ,
         map(y,
-            PS2_MIN_VALUE,
-            PS2_MAX_VALUE,
-            diffSteerComputeRange,
-            -diffSteerComputeRange)
+            m_stickMinValue,
+            m_stickMaxValue,
+            m_invertYAxis ? diffSteerComputeRange : -diffSteerComputeRange,
+            m_invertYAxis ? -diffSteerComputeRange : diffSteerComputeRange)
         );
 
     move(m_diffSteer.computedLeftMotor(), m_diffSteer.computedRightMotor());
@@ -60,12 +77,12 @@ void MotorController::analogMove(int x, int y) {
 }
 
 /**
- * Move tank with directional pad values, i.e., a d-pad.
+ * Move tank with d-pad. Function expects [stickMinValue, stickMaxValue] values, when 0 means button is not pressed.
  *
- * @param padUp: up button value, [0, 255].
- * @param padDown: down button value, [0, 255].
- * @param padLeft: left button value, [0, 255].
- * @param padRight: right button value, [0, 255].
+ * @param padUp: up button value.
+ * @param padDown: down button value.
+ * @param padLeft: left button value.
+ * @param padRight: right button value.
  */
 void MotorController::padMove(int padUp, int padDown, int padLeft, int padRight) {
 
@@ -88,13 +105,15 @@ void MotorController::padMove(int padUp, int padDown, int padLeft, int padRight)
  */
 void MotorController::move(int leftMotor, int rightMotor) {
 
+    int diffSteerComputeRange = m_diffSteer.getComputeRange();
+
     standby(false);
     digitalWrite(TB_AIN1, (leftMotor  < 0) ? LOW  : HIGH);
     digitalWrite(TB_AIN2, (leftMotor  < 0) ? HIGH : LOW);
     digitalWrite(TB_BIN1, (rightMotor < 0) ? HIGH : LOW);
     digitalWrite(TB_BIN2, (rightMotor < 0) ? LOW  : HIGH);
-    int pwml = abs(map(leftMotor,  -127, 127, -255, 255));  // [0,255]
-    int pwmr = abs(map(rightMotor, -127, 127, -255, 255));  // [0,255]
+    int pwml = abs(map(leftMotor,  -diffSteerComputeRange, diffSteerComputeRange, -255, 255));  // [0,255]
+    int pwmr = abs(map(rightMotor, -diffSteerComputeRange, diffSteerComputeRange, -255, 255));  // [0,255]
     analogWrite(TB_PWMA, pwml);
     analogWrite(TB_PWMB, pwmr);
 
