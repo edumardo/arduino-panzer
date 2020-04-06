@@ -13,9 +13,9 @@ MotorController::MotorController() {
  *
  * @param debug_mode: true to enable serial.print, false otherwise.
  */
-void MotorController::begin(bool debug_mode) {
+void MotorController::begin(bool debugMode) {
 
-    m_debug_mode = debug_mode;
+    m_debugMode = debugMode;
     m_diffSteer.begin(PIVOT_Y_LIMIT);
 
     pinMode(TB_PWMA, OUTPUT);
@@ -54,7 +54,7 @@ void MotorController::analogMove(int x, int y) {
 
     move(m_diffSteer.computedLeftMotor(), m_diffSteer.computedRightMotor());
 
-    if (m_debug_mode) {
+    if (m_debugMode) {
         printXY(x, y);
     }
 }
@@ -74,7 +74,7 @@ void MotorController::padMove(int padUp, int padDown, int padLeft, int padRight)
     else if (padLeft)   move(0,  PAD_FIXED_SPEED);
     else if (padRight)  move(PAD_FIXED_SPEED, 0);
 
-    if (m_debug_mode) {
+    if (m_debugMode) {
         printXY(padUp, padDown);
         printXY(padLeft, padRight);
     }
@@ -98,7 +98,7 @@ void MotorController::move(int leftMotor, int rightMotor) {
     analogWrite(TB_PWMA, pwml);
     analogWrite(TB_PWMB, pwmr);
 
-    if (m_debug_mode) {
+    if (m_debugMode) {
         printXY(leftMotor, rightMotor);
         if (leftMotor  < 0) Serial.print("[leftMotor reverse]"); else if (leftMotor == 0) Serial.print("[leftMotor idle]"); else Serial.print("[leftMotor forward]");
         if (rightMotor < 0) Serial.print("[rightMotor reverse]"); else if (rightMotor == 0) Serial.print("[rightMotor idle]"); else Serial.print("[rightMotor forward]");
@@ -115,7 +115,7 @@ void MotorController::standby(bool standby) {
 
     digitalWrite(TB_STBY, standby ? LOW: HIGH);
 
-    if (m_debug_mode) {
+    if (m_debugMode) {
         Serial.print("[MotorController] standbyMotors: "); Serial.println(standby ? "true" : "false");
     }
 }

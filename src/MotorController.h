@@ -13,13 +13,13 @@ class MotorController {
 
     private:
         DifferentialSteering m_diffSteer;
-        bool m_debug_mode;
+        bool m_debugMode;
         void move(int leftMotor, int rightMotor);
         void printXY(int x, int y);
 
     public:
         MotorController();
-        void begin(bool debug_mode);
+        void begin(bool debugMode);
         void analogMove(int x, int y);
         void padMove(int padUp, int padDown, int padLeft, int padRight);
         void standby(bool standby);
