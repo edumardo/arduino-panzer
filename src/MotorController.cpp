@@ -33,9 +33,9 @@ void MotorController::begin(bool debug_mode) {
  * @param x: value of x axis, [0,255].
  * @param y: value of y axis, [0,255].
  */
-void MotorController::analogMove(byte x, byte y) {
+void MotorController::analogMove(int x, int y) {
 
-    byte diffSteerComputeRange = m_diffSteer.getComputeRange();
+    int diffSteerComputeRange = m_diffSteer.getComputeRange();
 
     // From PS2 range to DifferentialSteering Range.
     m_diffSteer.computeMotors(
@@ -67,7 +67,7 @@ void MotorController::analogMove(byte x, byte y) {
  * @param padLeft: left button value, [0, 255].
  * @param padRight: right button value, [0, 255].
  */
-void MotorController::padMove(byte padUp, byte padDown, byte padLeft, byte padRight) {
+void MotorController::padMove(int padUp, int padDown, int padLeft, int padRight) {
 
     if (padUp)          move(PAD_FIXED_SPEED, PAD_FIXED_SPEED);
     else if (padDown)   move(-PAD_FIXED_SPEED, -PAD_FIXED_SPEED);

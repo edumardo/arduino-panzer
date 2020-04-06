@@ -20,8 +20,8 @@ class MotorController {
     public:
         MotorController();
         void begin(bool debug_mode);
-        void analogMove(byte x, byte y);
-        void padMove(byte padUp, byte padDown, byte padLeft, byte padRight);
+        void analogMove(int x, int y);
+        void padMove(int padUp, int padDown, int padLeft, int padRight);
         void standby(bool standby);
 };
 
