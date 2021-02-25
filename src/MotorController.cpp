@@ -37,15 +37,15 @@ void MotorController::begin(bool debugMode, int stickMinValue, int stickMaxValue
  * Use differential steering to move the tank with [x,y] values, i.e., an analog stick.
  * Moving is from idle position [stickMinValue / 2, stickMaxValue / 2]. Yoy have to call this method when you detect
  * movement in your stick.
- * 
- * ps2 controller example: 
+ *
+ * ps2 controller example:
  *      controller interval : [0,255]
  *      idle position       : [128,128]
  *      analogMove(128,   0): Y axis decreases when push forward.
  *      analogMove(128, 255): Y axis increases when push back.
  *      analogMove(255, 128): stick to right.
  *      analogMove(  0, 128): stick to left.
- * 
+ *
  *
  * @param x: value of x axis, interval set on begin().
  * @param y: value of y axis, interval set on begin().

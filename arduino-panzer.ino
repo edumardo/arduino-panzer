@@ -2,9 +2,8 @@
 #include "DifferentialSteering.h"
 #include "src/main.h"
 /*********************************************************************************************************************/
-int error = 0;
-int type = 0;
-int vibrate = 0;
+int ps2xConfigError = 0;
+int ps2xType = 0;
 
 MotorController motorController;
 PS2X ps2x;
@@ -14,7 +13,7 @@ unsigned long ledHullMGpreviousMillis = 0;
 /*********************************************************************************************************************/
 void setup() {
 
-    Serial.begin(BAUD_RATE);
+    Serial.begin(57600);
     Serial.println("Inicializamos Serial");
 
     motorController.begin(true,     // debug pinMode
@@ -26,17 +25,17 @@ void setup() {
     pinMode(LED_HULLMG_PIN, OUTPUT);
 
     delay(300);  //added delay to give wireless ps2 module some time to startup, before configuring it
-    error = ps2x.config_gamepad(PS2_PIN_CLK, PS2_PIN_CMD, PS2_PIN_SEL, PS2_PIN_DAT, PS2_PRESSURES, PS2_RUMBLE);
-    if (error == 0){
+    ps2xConfigError = ps2x.config_gamepad(PS2_PIN_CLK, PS2_PIN_CMD, PS2_PIN_SEL, PS2_PIN_DAT, PS2_PRESSURES, PS2_RUMBLE);
+    if (ps2xConfigError == 0){
         Serial.println("Found Controller, configured successful ");
     } else {
-        Serial.println("Error, check wiring");
+        Serial.println("ps2xConfigError, check wiring");
     }
 
-    type = ps2x.readType();
-    Serial.print("PS2X type: "); Serial.println(type);
-    switch(type) {
-        case 0: Serial.print("Unknown Controller type found "); break;
+    ps2xType = ps2x.readType();
+    Serial.print("PS2X ps2xType: "); Serial.println(ps2xType);
+    switch(ps2xType) {
+        case 0: Serial.print("Unknown Controller ps2xType found "); break;
         case 1: Serial.print("DualShock Controller found "); break;
         case 2: Serial.print("GuitarHero Controller found "); break;
         case 3: Serial.print("Wireless Sony DualShock Controller found "); break;
@@ -44,10 +43,10 @@ void setup() {
 }
 /*********************************************************************************************************************/
 void loop() {
-    if(error == 1) //skip loop if no controller found
+    if(ps2xConfigError == 1) //skip loop if no controller found
         return;
 
-    ps2x.read_gamepad(); //read controller and set large motor to spin at 'vibrate' speed
+    ps2x.read_gamepad();
 
     unsigned long currentMillis = millis();
     if (ps2x.Button(PSB_R2)) {
