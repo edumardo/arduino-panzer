@@ -1,9 +1,9 @@
-#include "MotorController.h"
+#include "DriveDirection.h"
 
 /**
  * Constructor class.
  */
-MotorController::MotorController() {
+DriveDirection::DriveDirection() {
 
 }
 
@@ -16,7 +16,7 @@ MotorController::MotorController() {
  * @param stickMaxValue: highest value of the controller.
  * @param invertYAxis: true if you want to invert Y axis, i.e., if you push forward the stick Y value decreases.
  */
-void MotorController::begin(bool debugMode, int stickMinValue, int stickMaxValue, bool invertYAxis) {
+void DriveDirection::begin(bool debugMode, int stickMinValue, int stickMaxValue, bool invertYAxis) {
 
     m_debugMode = debugMode;
     m_stickMinValue = stickMinValue;
@@ -50,7 +50,7 @@ void MotorController::begin(bool debugMode, int stickMinValue, int stickMaxValue
  * @param x: value of x axis, interval set on begin().
  * @param y: value of y axis, interval set on begin().
  */
-void MotorController::analogMove(int x, int y) {
+void DriveDirection::analogMove(int x, int y) {
 
     int diffSteerComputeRange = m_diffSteer.getComputeRange();
 
@@ -84,7 +84,7 @@ void MotorController::analogMove(int x, int y) {
  * @param padLeft: left button value.
  * @param padRight: right button value.
  */
-void MotorController::padMove(int padUp, int padDown, int padLeft, int padRight) {
+void DriveDirection::padMove(int padUp, int padDown, int padLeft, int padRight) {
 
     if (padUp)          move(PAD_FIXED_SPEED, PAD_FIXED_SPEED);
     else if (padDown)   move(-PAD_FIXED_SPEED, -PAD_FIXED_SPEED);
@@ -103,7 +103,7 @@ void MotorController::padMove(int padUp, int padDown, int padLeft, int padRight)
  * @param leftMotor: left motor value, [-127,127].
  * @param rightMotor: right motor value, [-127,127].
  */
-void MotorController::move(int leftMotor, int rightMotor) {
+void DriveDirection::move(int leftMotor, int rightMotor) {
 
     int diffSteerComputeRange = m_diffSteer.getComputeRange();
 
@@ -130,12 +130,12 @@ void MotorController::move(int leftMotor, int rightMotor) {
  *
  * @param standby: true to disable motors, false to enable.
  */
-void MotorController::standby(bool standby) {
+void DriveDirection::standby(bool standby) {
 
     digitalWrite(TB_STBY, standby ? LOW: HIGH);
 
     if (m_debugMode) {
-        Serial.print("[MotorController] standbyMotors: "); Serial.println(standby ? "true" : "false");
+        Serial.print("[DriveDirection] standbyMotors: "); Serial.println(standby ? "true" : "false");
     }
 }
 
@@ -145,7 +145,7 @@ void MotorController::standby(bool standby) {
  * @param x: x value to print.
  * @param y: y value to print.
  */
-void MotorController::printXY(int x, int y) {
+void DriveDirection::printXY(int x, int y) {
     Serial.print("[");
     Serial.print(x, DEC);
     Serial.print(",");

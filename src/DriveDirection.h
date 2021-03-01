@@ -1,10 +1,10 @@
-#ifndef MOTORCONTROLLER_H
-#define MOTORCONTROLLER_H
+#ifndef DRIVEDIRECTION_H
+#define DRIVEDIRECTION_H
 
 #include "pinout.h"
 #include "DifferentialSteering.h"
 
-class MotorController {
+class DriveDirection {
 
     private:
         const int PAD_FIXED_SPEED = 90;     // 90 is 75% of 127
@@ -18,7 +18,7 @@ class MotorController {
         void printXY(int x, int y);
 
     public:
-        MotorController();
+        DriveDirection();
         void begin(bool debugMode, int stickMinValue, int stickMaxValue, bool invertYAxis);
         void analogMove(int x, int y);
         void padMove(int padUp, int padDown, int padLeft, int padRight);

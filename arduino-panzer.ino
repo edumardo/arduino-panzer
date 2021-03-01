@@ -5,7 +5,7 @@
 int ps2xConfigError = 0;
 int ps2xType = 0;
 
-MotorController motorController;
+DriveDirection driveDirection;
 PS2X ps2x;
 
 byte ledHullMGState = LOW;
@@ -16,7 +16,7 @@ void setup() {
     Serial.begin(57600);
     Serial.println("Inicializamos Serial");
 
-    motorController.begin(true,     // debug pinMode
+    driveDirection.begin(false,     // debug pinMode
                           0,        // lowest value of the transmitter
                           255,      // highest value of the transmitter
                           true      // Y-axis decreases when I push forward
@@ -69,13 +69,13 @@ void loop() {
     }
 
     if(ps2x.Analog(PSS_LX) != PS2_MIDDLE_VALUE || ps2x.Analog(PSS_LY) != PS2_MIDDLE_VALUE) {
-        motorController.analogMove(ps2x.Analog(PSS_LX), ps2x.Analog(PSS_LY));
+        driveDirection.analogMove(ps2x.Analog(PSS_LX), ps2x.Analog(PSS_LY));
     }
     else if (ps2x.Button(PSB_PAD_UP) || ps2x.Button(PSB_PAD_RIGHT) || ps2x.Button(PSB_PAD_LEFT) || ps2x.Button(PSB_PAD_DOWN) ) {
-        motorController.padMove(ps2x.Analog(PSAB_PAD_UP), ps2x.Analog(PSAB_PAD_DOWN), ps2x.Analog(PSAB_PAD_LEFT), ps2x.Analog(PSAB_PAD_RIGHT));
+        driveDirection.padMove(ps2x.Analog(PSAB_PAD_UP), ps2x.Analog(PSAB_PAD_DOWN), ps2x.Analog(PSAB_PAD_LEFT), ps2x.Analog(PSAB_PAD_RIGHT));
     }
     else {
-        motorController.standby(true);
+        driveDirection.standby(true);
     }
 
     Serial.println("");
