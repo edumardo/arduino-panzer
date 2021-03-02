@@ -9,13 +9,13 @@
 const bool PS2_PRESSURES = true;
 const bool PS2_RUMBLE    = true;
 
-/* TB6612FNG pins */
-const int TB_PWMA = 3;
-const int TB_AIN2 = 2;
-const int TB_AIN1 = 4;
-const int TB_STBY = 8;
-const int TB_BIN1 = 12;
-const int TB_BIN2 = 7;
-const int TB_PWMB = 9;
+/* TB6612FNG drive pins */
+const int TB_DRIVE_PWMA = 3;
+const int TB_DRIVE_AIN2 = 2;
+const int TB_DRIVE_AIN1 = 4;
+const int TB_DRIVE_STBY = 8;
+const int TB_DRIVE_BIN1 = 12;
+const int TB_DRIVE_BIN2 = 7;
+const int TB_DRIVE_PWMB = 9;
 
 #endif
