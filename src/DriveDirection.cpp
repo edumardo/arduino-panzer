@@ -24,12 +24,12 @@ void DriveDirection::begin(bool debugMode, int stickMinValue, int stickMaxValue,
     m_invertYAxis = invertYAxis;
     m_diffSteer.begin(PIVOT_Y_LIMIT);
 
-    pinMode(TB_PWMA, OUTPUT);
-    pinMode(TB_AIN2, OUTPUT);
-    pinMode(TB_AIN1, OUTPUT);
-    pinMode(TB_BIN1, OUTPUT);
-    pinMode(TB_BIN2, OUTPUT);
-    pinMode(TB_PWMB, OUTPUT);
+    pinMode(TB_DRIVE_PWMA, OUTPUT);
+    pinMode(TB_DRIVE_AIN2, OUTPUT);
+    pinMode(TB_DRIVE_AIN1, OUTPUT);
+    pinMode(TB_DRIVE_BIN1, OUTPUT);
+    pinMode(TB_DRIVE_BIN2, OUTPUT);
+    pinMode(TB_DRIVE_PWMB, OUTPUT);
     standby(true);
 }
 
@@ -108,14 +108,14 @@ void DriveDirection::move(int leftMotor, int rightMotor) {
     int diffSteerComputeRange = m_diffSteer.getComputeRange();
 
     standby(false);
-    digitalWrite(TB_AIN1, (leftMotor  < 0) ? LOW  : HIGH);
-    digitalWrite(TB_AIN2, (leftMotor  < 0) ? HIGH : LOW);
-    digitalWrite(TB_BIN1, (rightMotor < 0) ? HIGH : LOW);
-    digitalWrite(TB_BIN2, (rightMotor < 0) ? LOW  : HIGH);
+    digitalWrite(TB_DRIVE_AIN1, (leftMotor  < 0) ? LOW  : HIGH);
+    digitalWrite(TB_DRIVE_AIN2, (leftMotor  < 0) ? HIGH : LOW);
+    digitalWrite(TB_DRIVE_BIN1, (rightMotor < 0) ? HIGH : LOW);
+    digitalWrite(TB_DRIVE_BIN2, (rightMotor < 0) ? LOW  : HIGH);
     int pwml = abs(map(leftMotor,  -diffSteerComputeRange, diffSteerComputeRange, -255, 255));  // [0,255]
     int pwmr = abs(map(rightMotor, -diffSteerComputeRange, diffSteerComputeRange, -255, 255));  // [0,255]
-    analogWrite(TB_PWMA, pwml);
-    analogWrite(TB_PWMB, pwmr);
+    analogWrite(TB_DRIVE_PWMA, pwml);
+    analogWrite(TB_DRIVE_PWMB, pwmr);
 
     if (m_debugMode) {
         printXY(leftMotor, rightMotor);
@@ -132,7 +132,7 @@ void DriveDirection::move(int leftMotor, int rightMotor) {
  */
 void DriveDirection::standby(bool standby) {
 
-    digitalWrite(TB_STBY, standby ? LOW: HIGH);
+    digitalWrite(TB_DRIVE_STBY, standby ? LOW: HIGH);
 
     if (m_debugMode) {
         Serial.print("[DriveDirection] standbyMotors: "); Serial.println(standby ? "true" : "false");
