@@ -11,7 +11,7 @@ Currently I have a heng long chassis with gearbox (2 DC motors), and I control i
 Hardware:
 
 * 1 x Arduino uno.
-* 1 x TB6612FNG.
+* 2 x TB6612FNG.
 * 1 x Heng Long chassis with gearbox (2 DC motors).
 * 1 x PS2 controller (bluetooth is not necessary).
 * 1 x battery (I'm using a 14.5V 2.15Ah from a robot vacuum cleaner).
@@ -29,8 +29,8 @@ Hardware:
 |---------|-------------|--------|
 | PS2 Pad control | ✔️ Done | |
 | PS2 left analog stick control | ✔️ Done | |
-| Turret rotation | ⚠️🛰 Pending hardware | |
-| Gun elevation | ⚠️🛰 Pending hardware | |
+| Turret rotation | ⚙️ In progress  | |
+| Gun elevation | ⚙️ In progress  | |
 | Smoke unit | ⚠️ Pending | |
 | Sounds | ⚠️ Pending | |
 | Hull MG firing sound | ⚠️ Pending | |
