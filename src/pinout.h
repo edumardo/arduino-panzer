@@ -18,7 +18,4 @@ const int TB_BIN1 = 12;
 const int TB_BIN2 = 7;
 const int TB_PWMB = 9;
 
-/* Led hull MG pin */
-#define LED_HULLMG_PIN 13
-
 #endif

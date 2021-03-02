@@ -7,9 +7,6 @@ int ps2xType = 0;
 
 DriveDirection driveDirection;
 PS2X ps2x;
-
-byte ledHullMGState = LOW;
-unsigned long ledHullMGpreviousMillis = 0;
 /*********************************************************************************************************************/
 void setup() {
 
@@ -21,8 +18,6 @@ void setup() {
                           255,      // highest value of the transmitter
                           true      // Y-axis decreases when I push forward
                           );
-
-    pinMode(LED_HULLMG_PIN, OUTPUT);
 
     delay(300);  //added delay to give wireless ps2 module some time to startup, before configuring it
     ps2xConfigError = ps2x.config_gamepad(PS2_PIN_CLK, PS2_PIN_CMD, PS2_PIN_SEL, PS2_PIN_DAT, PS2_PRESSURES, PS2_RUMBLE);
@@ -47,26 +42,6 @@ void loop() {
         return;
 
     ps2x.read_gamepad();
-
-    unsigned long currentMillis = millis();
-    if (ps2x.Button(PSB_R2)) {
-        unsigned long currentMillis = millis();
-        if (currentMillis - ledHullMGpreviousMillis >= LED_HULLMG_INTERVAL) {
-            ledHullMGpreviousMillis = currentMillis;
-
-            // if the LED is off turn it on and vice-versa:
-            if (ledHullMGState == LOW) {
-                ledHullMGState = HIGH;
-            } else {
-                ledHullMGState = LOW;
-            }
-
-            digitalWrite(LED_HULLMG_PIN, ledHullMGState);
-        }
-    }
-    if (!ps2x.Button(PSB_R2)) {
-        digitalWrite(LED_HULLMG_PIN, LOW);
-    }
 
     if(ps2x.Analog(PSS_LX) != PS2_MIDDLE_VALUE || ps2x.Analog(PSS_LY) != PS2_MIDDLE_VALUE) {
         driveDirection.analogMove(ps2x.Analog(PSS_LX), ps2x.Analog(PSS_LY));

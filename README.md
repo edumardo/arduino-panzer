@@ -34,7 +34,7 @@ Hardware:
 | Smoke unit | ⚠️ Pending | |
 | Sounds | ⚠️ Pending | |
 | Hull MG firing sound | ⚠️ Pending | |
-| Hull MG firing led | ⚙️ In progress | |
+| Hull MG firing led | ⚠️ Pending | |
 
 ## Wiring diagram
 
