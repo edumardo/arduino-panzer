@@ -23,12 +23,13 @@ void setup() {
 
     int turretRotationPinout[4] = {TB_TURRETROTATION_PWMA, TB_TURRETROTATION_AIN1, TB_TURRETROTATION_AIN2, TB_TURRETGUN_STBY};
     turretRotation.begin(turretRotationPinout, MIN_STICK_VALUE, MAX_STICK_VALUE, CENTER_STICK_VALUE);
-    turretRotation.enableDebug();
+    turretRotation.setMaxVoltagePercent(50);
+    turretRotation.enableDebug("Turret rotation");
 
     int gunElevationPinout[4] = {TB_GUNELEVATION_PWMB, TB_GUNELEVATION_BIN1, TB_GUNELEVATION_BIN2, TB_TURRETGUN_STBY};
     gunElevation.begin(gunElevationPinout, MIN_STICK_VALUE, MAX_STICK_VALUE, CENTER_STICK_VALUE);
-    gunElevation.enableDebug();
-
+    gunElevation.setMaxVoltagePercent(50);
+    gunElevation.enableDebug("Gun elevation");
 
     delay(300);  //added delay to give wireless ps2 module some time to startup, before configuring it
     ps2xConfigError = ps2x.config_gamepad(PS2_PIN_CLK, PS2_PIN_CMD, PS2_PIN_SEL, PS2_PIN_DAT, PS2_PRESSURES, PS2_RUMBLE);
@@ -58,20 +59,22 @@ void loop() {
     if(ps2x.Analog(PSS_LX) != CENTER_STICK_VALUE || ps2x.Analog(PSS_LY) != CENTER_STICK_VALUE) {
         driveDirection.analogMove(ps2x.Analog(PSS_LX), ps2x.Analog(PSS_LY));
     }
-    else if (ps2x.Analog(PSS_RX) != CENTER_STICK_VALUE) {
+
+    if (ps2x.Analog(PSS_RX) != CENTER_STICK_VALUE) {
         turretRotation.move(ps2x.Analog(PSS_RX));
     }
-    else if (ps2x.Analog(PSS_RY) != CENTER_STICK_VALUE){
+
+    if (ps2x.Analog(PSS_RY) != CENTER_STICK_VALUE) {
         gunElevation.move(ps2x.Analog(PSS_RY));
     }
-    else if (ps2x.Button(PSB_PAD_UP) || ps2x.Button(PSB_PAD_RIGHT) || ps2x.Button(PSB_PAD_LEFT) || ps2x.Button(PSB_PAD_DOWN) ) {
+
+    if (ps2x.Button(PSB_PAD_UP) || ps2x.Button(PSB_PAD_RIGHT) || ps2x.Button(PSB_PAD_LEFT) || ps2x.Button(PSB_PAD_DOWN) ) {
         driveDirection.padMove(ps2x.Analog(PSAB_PAD_UP), ps2x.Analog(PSAB_PAD_DOWN), ps2x.Analog(PSAB_PAD_LEFT), ps2x.Analog(PSAB_PAD_RIGHT));
     }
-    else {
-        driveDirection.standby(true);
-        turretRotation.disableMotor();
-        gunElevation.disableMotor();
-    }
+
+    driveDirection.standby(true);
+    turretRotation.disableMotor();
+    gunElevation.disableMotor();
 
     Serial.println("");
     delay(50);
