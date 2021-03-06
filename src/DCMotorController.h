@@ -1,6 +1,8 @@
 #ifndef DCMOTORCONTROLLER_H
 #define DCMOTORCONTROLLER_H
 
+#include <Arduino.h>
+
 class DCMotorController {
 
     private:
@@ -12,15 +14,18 @@ class DCMotorController {
         int m_in1Pin;
         int m_in2Pin;
         int m_standbyPin;
-        void print(int speed);
+        int m_maxVoltagePercent;
+        String m_debugName;
+        void printDEC(int value);
 
     public:
         DCMotorController();
         void begin(int pinMotor[4], int stickMinValue, int stickMaxValue, int stickCenterValue);
         void move(int stickValue);
+        void setMaxVoltagePercent(int percent);
         void enableMotor();
         void disableMotor();
-        void enableDebug();
+        void enableDebug(String debugName);
         void disableDebug();
 
 };
