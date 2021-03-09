@@ -16,7 +16,7 @@ class DCMotorController {
         int m_standbyPin;
         int m_maxVoltagePercent;
         String m_debugName;
-        void printDEC(int value);
+        void printDEC(String label, int value);
 
     public:
         DCMotorController();

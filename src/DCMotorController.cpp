@@ -30,6 +30,7 @@ void DCMotorController::begin(int pinMotor[4], int stickMinValue, int stickMaxVa
     pinMode(m_pwmPin, OUTPUT);
     pinMode(m_in1Pin, OUTPUT);
     pinMode(m_in2Pin, OUTPUT);
+    pinMode(m_standbyPin, OUTPUT);
     disableMotor();
 }
 
@@ -59,6 +60,9 @@ void DCMotorController::enableMotor() {
  */
 void DCMotorController::disableMotor() {
 
+    digitalWrite(m_pwmPin, 0);
+    digitalWrite(m_in1Pin, LOW);
+    digitalWrite(m_in2Pin, LOW);
     digitalWrite(m_standbyPin, LOW);
 }
 
@@ -66,6 +70,8 @@ void DCMotorController::disableMotor() {
  *
  */
 void DCMotorController::move(int stickValue) {
+
+    if (stickValue == m_stickCenterValue) return;
 
     digitalWrite(m_in1Pin, (stickValue < m_stickCenterValue) ? LOW : HIGH);
     digitalWrite(m_in2Pin, (stickValue < m_stickCenterValue) ? HIGH : LOW);
@@ -76,7 +82,7 @@ void DCMotorController::move(int stickValue) {
 
     if (m_debugMode) {
 
-        printDEC(stickValue);
+        printDEC("stickValue", stickValue);
         Serial.print("[");
         Serial.print(m_debugName);
         if (stickValue < m_stickCenterValue)
@@ -84,15 +90,18 @@ void DCMotorController::move(int stickValue) {
         else 
             Serial.print(" right");
         Serial.print("]");
-        printDEC(pwmSpeedPercent);
+        printDEC("pwmSpeedPercent", pwmSpeedPercent);
+        Serial.println();
     }
 }
 
 /**
  *
  */
-void DCMotorController::printDEC(int value) {
+void DCMotorController::printDEC(String label, int value) {
     Serial.print("[");
+    Serial.print(label);
+    Serial.print(": ");
     Serial.print(value, DEC);
     Serial.print("]");
 }
