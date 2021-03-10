@@ -15,12 +15,6 @@ void setup() {
     Serial.begin(57600);
     Serial.println("Inicializamos Serial");
 
-    driveDirection.begin(false,     // debug pinMode
-                          MIN_STICK_VALUE,
-                          MAX_STICK_VALUE,
-                          true      // Y-axis decreases when I push forward
-                          );
-
     int turretRotationPinout[4] = {TB_TURRETROTATION_PWMA, TB_TURRETROTATION_AIN1, TB_TURRETROTATION_AIN2, TB_TURRETGUN_STBY};
     turretRotation.begin(turretRotationPinout, MIN_STICK_VALUE, MAX_STICK_VALUE, CENTER_STICK_VALUE);
     turretRotation.setMaxVoltagePercent(50);
@@ -30,6 +24,17 @@ void setup() {
     gunElevation.begin(gunElevationPinout, MIN_STICK_VALUE, MAX_STICK_VALUE, CENTER_STICK_VALUE);
     gunElevation.setMaxVoltagePercent(50);
     gunElevation.enableDebug("Gun elevation");
+
+
+    int leftMotorPinout[4] = {TB_DRIVE_PWMA, TB_DRIVE_AIN1, TB_DRIVE_AIN2, TB_DRIVE_STBY};
+    int RightMotorPinout[4] = {TB_DRIVE_PWMB, TB_DRIVE_BIN1, TB_DRIVE_BIN2, TB_DRIVE_STBY};
+    int stickProperties[3] = {MIN_STICK_VALUE, MAX_STICK_VALUE, CENTER_STICK_VALUE};
+    driveDirection.begin(leftMotorPinout, RightMotorPinout, stickProperties);
+    driveDirection.invertYStick();
+    driveDirection.setMaxVoltagePercentAnalogMove(50);
+    driveDirection.setMaxVoltagePercentPadMove(40);
+    driveDirection.enableDebug();
+
 
     delay(300);  //added delay to give wireless ps2 module some time to startup, before configuring it
     ps2xConfigError = ps2x.config_gamepad(PS2_PIN_CLK, PS2_PIN_CMD, PS2_PIN_SEL, PS2_PIN_DAT, PS2_PRESSURES, PS2_RUMBLE);
@@ -66,13 +71,13 @@ void loop() {
     }
 
     if(ps2x.Analog(PSS_LX) != CENTER_STICK_VALUE || ps2x.Analog(PSS_LY) != CENTER_STICK_VALUE) {
-        driveDirection.analogMove(ps2x.Analog(PSS_LX), ps2x.Analog(PSS_LY));
+        driveDirection.move(ps2x.Analog(PSS_LX), ps2x.Analog(PSS_LY));
     }
     else if (ps2x.Button(PSB_PAD_UP) || ps2x.Button(PSB_PAD_RIGHT) || ps2x.Button(PSB_PAD_LEFT) || ps2x.Button(PSB_PAD_DOWN) ) {
-        driveDirection.padMove(ps2x.Analog(PSAB_PAD_UP), ps2x.Analog(PSAB_PAD_DOWN), ps2x.Analog(PSAB_PAD_LEFT), ps2x.Analog(PSAB_PAD_RIGHT));
+        driveDirection.move(ps2x.Analog(PSAB_PAD_UP), ps2x.Analog(PSAB_PAD_DOWN), ps2x.Analog(PSAB_PAD_LEFT), ps2x.Analog(PSAB_PAD_RIGHT));
     }
     else {
-        driveDirection.standby(true);
+        driveDirection.disableMotors();
     }
 
     Serial.println("");

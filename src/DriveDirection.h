@@ -1,28 +1,34 @@
 #ifndef DRIVEDIRECTION_H
 #define DRIVEDIRECTION_H
 
-#include "pinout.h"
+#include "DCMotorController.h"
 #include "DifferentialSteering.h"
 
 class DriveDirection {
 
     private:
-        const int PAD_FIXED_SPEED = 90;     // 90 is 75% of 127
-        const int PIVOT_Y_LIMIT = 32;       // For DifferentialSteering
+        DCMotorController m_leftMotor;
+        DCMotorController m_rightMotor;
         DifferentialSteering m_diffSteer;
-        bool m_debugMode;
-        int m_stickMinValue;
-        int m_stickMaxValue;
-        bool m_invertYAxis;
-        void move(int leftMotor, int rightMotor);
-        void printXY(int x, int y);
+        byte m_diffSteerComputeRange;
+        static const byte m_pivotYLimit = 32;
+        byte m_stickMinValue;
+        byte m_stickMaxValue;
+        bool m_invertYStick;
+        byte m_analogMovePercent;
+        byte m_padMovePercent;
 
     public:
         DriveDirection();
-        void begin(bool debugMode, int stickMinValue, int stickMaxValue, bool invertYAxis);
-        void analogMove(int x, int y);
-        void padMove(int padUp, int padDown, int padLeft, int padRight);
-        void standby(bool standby);
+        void begin(int pinLeftMotor[4], int pinRightMotor[4], int stickProperties[3]);
+        void move(byte stickValueX, byte stickValueY);
+        void move(byte padUp, byte padDown, byte padLeft, byte padRight);
+        void setMaxVoltagePercentAnalogMove(byte percent);
+        void setMaxVoltagePercentPadMove(byte percent);
+        void invertYStick();
+        void disableMotors();
+        void enableDebug();
+        void disableDebug();
 };
 
 #endif

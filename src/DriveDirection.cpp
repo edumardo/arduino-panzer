@@ -1,155 +1,126 @@
 #include "DriveDirection.h"
 
 /**
- * Constructor class.
+ *
  */
 DriveDirection::DriveDirection() {
 
+    m_invertYStick = false;
+    m_analogMovePercent = 100;
+    m_padMovePercent = 100;
+    m_diffSteer.begin(m_pivotYLimit);
+    m_diffSteerComputeRange = m_diffSteer.getComputeRange();
 }
 
 /**
- * Initialize pins, interval values of the controller, and the direcction of Y axis.
- * Pins are defined in pinout.h
  *
- * @param debugMode: true to enable serial.print, false otherwise.
- * @param stickMinValue: lowest value of the controller.
- * @param stickMaxValue: highest value of the controller.
- * @param invertYAxis: true if you want to invert Y axis, i.e., if you push forward the stick Y value decreases.
  */
-void DriveDirection::begin(bool debugMode, int stickMinValue, int stickMaxValue, bool invertYAxis) {
+void DriveDirection::begin(int pinLeftMotor[4], int pinRightMotor[4], int stickProperties[3]){
 
-    m_debugMode = debugMode;
-    m_stickMinValue = stickMinValue;
-    m_stickMaxValue = stickMaxValue;
-    m_invertYAxis = invertYAxis;
-    m_diffSteer.begin(PIVOT_Y_LIMIT);
-
-    pinMode(TB_DRIVE_PWMA, OUTPUT);
-    pinMode(TB_DRIVE_AIN2, OUTPUT);
-    pinMode(TB_DRIVE_AIN1, OUTPUT);
-    pinMode(TB_DRIVE_BIN1, OUTPUT);
-    pinMode(TB_DRIVE_BIN2, OUTPUT);
-    pinMode(TB_DRIVE_PWMB, OUTPUT);
-    standby(true);
+    m_stickMinValue = stickProperties[0];
+    m_stickMaxValue = stickProperties[1];
+    m_leftMotor.begin(pinLeftMotor, m_invertYStick ? m_diffSteerComputeRange : -m_diffSteerComputeRange, m_invertYStick ? -m_diffSteerComputeRange : m_diffSteerComputeRange, 0);
+    m_rightMotor.begin(pinRightMotor, m_invertYStick ? m_diffSteerComputeRange : -m_diffSteerComputeRange, m_invertYStick ? -m_diffSteerComputeRange : m_diffSteerComputeRange, 0);
 }
 
 /**
- * Use differential steering to move the tank with [x,y] values, i.e., an analog stick.
- * Moving is from idle position [stickMinValue / 2, stickMaxValue / 2]. Yoy have to call this method when you detect
- * movement in your stick.
  *
- * ps2 controller example:
- *      controller interval : [0,255]
- *      idle position       : [128,128]
- *      analogMove(128,   0): Y axis decreases when push forward.
- *      analogMove(128, 255): Y axis increases when push back.
- *      analogMove(255, 128): stick to right.
- *      analogMove(  0, 128): stick to left.
- *
- *
- * @param x: value of x axis, interval set on begin().
- * @param y: value of y axis, interval set on begin().
  */
-void DriveDirection::analogMove(int x, int y) {
+void DriveDirection::move(byte stickValueX, byte stickValueY) {
 
-    int diffSteerComputeRange = m_diffSteer.getComputeRange();
-
-    // From PS2 range to DifferentialSteering Range.
     m_diffSteer.computeMotors(
-        map(x,
+        map(stickValueX,
             m_stickMinValue,
             m_stickMaxValue,
-            -diffSteerComputeRange,
-            diffSteerComputeRange)
+            -m_diffSteerComputeRange,
+            m_diffSteerComputeRange)
         ,
-        map(y,
+        map(stickValueY,
             m_stickMinValue,
             m_stickMaxValue,
-            m_invertYAxis ? diffSteerComputeRange : -diffSteerComputeRange,
-            m_invertYAxis ? -diffSteerComputeRange : diffSteerComputeRange)
+            m_invertYStick ? m_diffSteerComputeRange : -m_diffSteerComputeRange,
+            m_invertYStick ? -m_diffSteerComputeRange : m_diffSteerComputeRange)
         );
 
-    move(m_diffSteer.computedLeftMotor(), m_diffSteer.computedRightMotor());
+    m_leftMotor.setMaxVoltagePercent(m_analogMovePercent);
+    m_rightMotor.setMaxVoltagePercent(m_analogMovePercent);
+    m_leftMotor.move(m_diffSteer.computedLeftMotor());
+    m_rightMotor.move(m_diffSteer.computedRightMotor());
+}
 
-    if (m_debugMode) {
-        printXY(x, y);
+/**
+ *
+ */
+void DriveDirection::move(byte padUp, byte padDown, byte padLeft, byte padRight) {
+
+    m_leftMotor.setMaxVoltagePercent(m_padMovePercent);
+    m_rightMotor.setMaxVoltagePercent(m_padMovePercent);
+
+    if (padUp) {
+        m_leftMotor.move(m_diffSteerComputeRange);
+        m_rightMotor.move(m_diffSteerComputeRange);
+    }
+    else if (padDown) {
+        m_leftMotor.move(-m_diffSteerComputeRange);
+        m_rightMotor.move(-m_diffSteerComputeRange);
+    }
+    else if (padLeft) {
+        m_leftMotor.disableMotor();
+        m_rightMotor.move(m_diffSteerComputeRange);
+    }
+    else if (padRight) {
+        m_leftMotor.move(m_diffSteerComputeRange);
+        m_rightMotor.disableMotor();
     }
 }
 
 /**
- * Move tank with d-pad. Function expects [stickMinValue, stickMaxValue] values, when 0 means button is not pressed.
  *
- * @param padUp: up button value.
- * @param padDown: down button value.
- * @param padLeft: left button value.
- * @param padRight: right button value.
  */
-void DriveDirection::padMove(int padUp, int padDown, int padLeft, int padRight) {
+void DriveDirection::setMaxVoltagePercentAnalogMove(byte analogMovePercent) {
 
-    if (padUp)          move(PAD_FIXED_SPEED, PAD_FIXED_SPEED);
-    else if (padDown)   move(-PAD_FIXED_SPEED, -PAD_FIXED_SPEED);
-    else if (padLeft)   move(0,  PAD_FIXED_SPEED);
-    else if (padRight)  move(PAD_FIXED_SPEED, 0);
-
-    if (m_debugMode) {
-        printXY(padUp, padDown);
-        printXY(padLeft, padRight);
-    }
+    m_analogMovePercent = analogMovePercent;
 }
 
 /**
- * Private method to send PWM values to the motors. Also it controls the direction of both motors.
  *
- * @param leftMotor: left motor value, [-127,127].
- * @param rightMotor: right motor value, [-127,127].
  */
-void DriveDirection::move(int leftMotor, int rightMotor) {
+void DriveDirection::setMaxVoltagePercentPadMove(byte padMovePercent) {
 
-    int diffSteerComputeRange = m_diffSteer.getComputeRange();
-
-    standby(false);
-    digitalWrite(TB_DRIVE_AIN1, (leftMotor  < 0) ? LOW  : HIGH);
-    digitalWrite(TB_DRIVE_AIN2, (leftMotor  < 0) ? HIGH : LOW);
-    digitalWrite(TB_DRIVE_BIN1, (rightMotor < 0) ? HIGH : LOW);
-    digitalWrite(TB_DRIVE_BIN2, (rightMotor < 0) ? LOW  : HIGH);
-    int pwml = abs(map(leftMotor,  -diffSteerComputeRange, diffSteerComputeRange, -255, 255));  // [0,255]
-    int pwmr = abs(map(rightMotor, -diffSteerComputeRange, diffSteerComputeRange, -255, 255));  // [0,255]
-    analogWrite(TB_DRIVE_PWMA, pwml);
-    analogWrite(TB_DRIVE_PWMB, pwmr);
-
-    if (m_debugMode) {
-        printXY(leftMotor, rightMotor);
-        if (leftMotor  < 0) Serial.print("[leftMotor reverse]"); else if (leftMotor == 0) Serial.print("[leftMotor idle]"); else Serial.print("[leftMotor forward]");
-        if (rightMotor < 0) Serial.print("[rightMotor reverse]"); else if (rightMotor == 0) Serial.print("[rightMotor idle]"); else Serial.print("[rightMotor forward]");
-        printXY(pwml, pwmr);
-    }
+    m_padMovePercent = padMovePercent;
 }
 
 /**
- * Enable or disable motors.
  *
- * @param standby: true to disable motors, false to enable.
  */
-void DriveDirection::standby(bool standby) {
+void DriveDirection::invertYStick() {
 
-    digitalWrite(TB_DRIVE_STBY, standby ? LOW: HIGH);
-
-    if (m_debugMode) {
-        Serial.print("[DriveDirection] standbyMotors: "); Serial.println(standby ? "true" : "false");
-    }
+    m_invertYStick = true;
 }
 
 /**
- * Prints [x,y] to serial without new line.
  *
- * @param x: x value to print.
- * @param y: y value to print.
  */
-void DriveDirection::printXY(int x, int y) {
-    Serial.print("[");
-    Serial.print(x, DEC);
-    Serial.print(",");
-    Serial.print(y, DEC);
-    Serial.print("]");
+void DriveDirection::disableMotors() {
+
+    m_leftMotor.disableMotor();
+    m_rightMotor.disableMotor();
 }
 
+/**
+ *
+ */
+void DriveDirection::enableDebug() {
+
+    m_leftMotor.enableDebug("DriveDirection left motor");
+    m_rightMotor.enableDebug("DriveDirection right motor");
+}
+
+/**
+ *
+ */
+void DriveDirection::disableDebug() {
+
+    m_leftMotor.disableDebug();
+    m_rightMotor.disableDebug();
+}
