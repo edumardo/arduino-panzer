@@ -10,6 +10,7 @@ DriveDirection::DriveDirection() {
     m_padMovePercent = 100;
     m_diffSteer.begin(m_pivotYLimit);
     m_diffSteerComputeRange = m_diffSteer.getComputeRange();
+    m_debugMode = false;
 }
 
 /**
@@ -27,6 +28,10 @@ void DriveDirection::begin(int pinLeftMotor[4], int pinRightMotor[4], int stickP
  *
  */
 void DriveDirection::move(byte stickValueX, byte stickValueY) {
+
+    if (m_debugMode) {
+        Serial.println("[XY DriveDirection]");
+    }
 
     m_diffSteer.computeMotors(
         map(stickValueX,
@@ -46,12 +51,20 @@ void DriveDirection::move(byte stickValueX, byte stickValueY) {
     m_rightMotor.setMaxVoltagePercent(m_analogMovePercent);
     m_leftMotor.move(m_diffSteer.computedLeftMotor());
     m_rightMotor.move(m_diffSteer.computedRightMotor());
+
+    if (m_debugMode) {
+        Serial.println();
+    }
 }
 
 /**
  *
  */
 void DriveDirection::move(byte padUp, byte padDown, byte padLeft, byte padRight) {
+
+    if (m_debugMode) {
+        Serial.println("[UDLR DriveDirection]");
+    }
 
     m_leftMotor.setMaxVoltagePercent(m_padMovePercent);
     m_rightMotor.setMaxVoltagePercent(m_padMovePercent);
@@ -71,6 +84,10 @@ void DriveDirection::move(byte padUp, byte padDown, byte padLeft, byte padRight)
     else if (padRight) {
         m_leftMotor.move(m_diffSteerComputeRange);
         m_rightMotor.disableMotor();
+    }
+    
+    if (m_debugMode) {
+        Serial.println();
     }
 }
 
@@ -112,8 +129,9 @@ void DriveDirection::disableMotors() {
  */
 void DriveDirection::enableDebug() {
 
-    m_leftMotor.enableDebug("DriveDirection left motor");
-    m_rightMotor.enableDebug("DriveDirection right motor");
+    m_debugMode = true;
+    m_leftMotor.enableDebug("left motor");
+    m_rightMotor.enableDebug("right motor");
 }
 
 /**
@@ -121,6 +139,7 @@ void DriveDirection::enableDebug() {
  */
 void DriveDirection::disableDebug() {
 
+    m_debugMode = false;
     m_leftMotor.disableDebug();
     m_rightMotor.disableDebug();
 }

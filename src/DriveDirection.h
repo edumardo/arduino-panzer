@@ -17,6 +17,7 @@ class DriveDirection {
         bool m_invertYStick;
         byte m_analogMovePercent;
         byte m_padMovePercent;
+        bool m_debugMode;
 
     public:
         DriveDirection();
