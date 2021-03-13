@@ -21,7 +21,9 @@ void DriveDirection::begin(int pinLeftMotor[4], int pinRightMotor[4], int stickP
     m_stickMinValue = stickProperties[0];
     m_stickMaxValue = stickProperties[1];
     m_leftMotor.begin(pinLeftMotor, m_invertYStick ? m_diffSteerComputeRange : -m_diffSteerComputeRange, m_invertYStick ? -m_diffSteerComputeRange : m_diffSteerComputeRange, 0);
+    m_leftMotor.setMaxVoltagePercent(m_analogMovePercent);
     m_rightMotor.begin(pinRightMotor, m_invertYStick ? m_diffSteerComputeRange : -m_diffSteerComputeRange, m_invertYStick ? -m_diffSteerComputeRange : m_diffSteerComputeRange, 0);
+    m_rightMotor.setMaxVoltagePercent(m_analogMovePercent);
 }
 
 /**
@@ -85,7 +87,7 @@ void DriveDirection::move(byte padUp, byte padDown, byte padLeft, byte padRight)
         m_leftMotor.move(m_diffSteerComputeRange);
         m_rightMotor.disableMotor();
     }
-    
+
     if (m_debugMode) {
         Serial.println();
     }
