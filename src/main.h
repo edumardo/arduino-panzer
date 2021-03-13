@@ -2,3 +2,4 @@
 #include "constants.h"
 #include "DriveDirection.h"
 #include "DCMotorController.h"
+#include "SmokeController.h"
