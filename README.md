@@ -31,7 +31,7 @@ Hardware:
 | PS2 left analog stick control | ✔️ Done | |
 | Turret rotation | ⚙️ In progress  | |
 | Gun elevation | ⚙️ In progress  | |
-| Smoke unit | ⚠️ Pending | |
+| Smoke unit | ⚙️ In progress | |
 | Sounds | ⚠️ Pending | |
 | Hull MG firing sound | ⚠️ Pending | |
 | Hull MG firing led | ⚠️ Pending | |
