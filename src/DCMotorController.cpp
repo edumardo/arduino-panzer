@@ -18,15 +18,15 @@ DCMotorController::DCMotorController() {
 /**
  *
  */
-void DCMotorController::begin(int pinMotor[4], int stickMinValue, int stickMaxValue, int stickCenterValue) {
+void DCMotorController::begin(int pinMotor[4], int stickProperties[3]) {
 
     m_pwmPin = pinMotor[0];
     m_in1Pin = pinMotor[1];
     m_in2Pin = pinMotor[2];
     m_standbyPin = pinMotor[3];
-    m_stickMinValue = stickMinValue;
-    m_stickMaxValue = stickMaxValue;
-    m_stickCenterValue = stickCenterValue;
+    m_stickMinValue = stickProperties[0];
+    m_stickMaxValue = stickProperties[1];
+    m_stickCenterValue = stickProperties[2];
     pinMode(m_pwmPin, OUTPUT);
     pinMode(m_in1Pin, OUTPUT);
     pinMode(m_in2Pin, OUTPUT);

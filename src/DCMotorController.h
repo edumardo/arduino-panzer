@@ -20,7 +20,7 @@ class DCMotorController {
 
     public:
         DCMotorController();
-        void begin(int pinMotor[4], int stickMinValue, int stickMaxValue, int stickCenterValue);
+        void begin(int pinMotor[4], int stickProperties[3]);
         void move(int stickValue);
         void setMaxVoltagePercent(int percent);
         void enableMotor();
