@@ -10,21 +10,21 @@ const bool PS2_PRESSURES = true;
 const bool PS2_RUMBLE    = true;
 
 /* TB6612FNG Drive pins */
-const int TB_DRIVE_PWMA = 3;
-const int TB_DRIVE_AIN2 = 2;
-const int TB_DRIVE_AIN1 = 4;
-const int TB_DRIVE_STBY = 8;
-const int TB_DRIVE_BIN1 = 12;
-const int TB_DRIVE_BIN2 = 7;
-const int TB_DRIVE_PWMB = 9;
+const int TB_DRIVE_PWMA =  4;
+const int TB_DRIVE_AIN2 = 23;
+const int TB_DRIVE_AIN1 = 25;
+const int TB_DRIVE_STBY = 27;
+const int TB_DRIVE_BIN1 = 29;
+const int TB_DRIVE_BIN2 = 31;
+const int TB_DRIVE_PWMB = 13;
 
 /* TB6612FNG Turret rotation and gun elevation pins */
-const int TB_TURRETROTATION_PWMA = 5;
-#define TB_TURRETROTATION_AIN2    A5
-#define TB_TURRETROTATION_AIN1    A4
-const int TB_TURRETGUN_STBY =      6;
-const int TB_GUNELEVATION_BIN1 =  10;
-const int TB_GUNELEVATION_BIN2 =  13;
-const int TB_GUNELEVATION_PWMB =  11;
+const int TB_TURRETROTATION_PWMA = 11;
+const int TB_TURRETROTATION_AIN2 = 22;
+const int TB_TURRETROTATION_AIN1 = 24;
+const int TB_TURRETGUN_STBY      = 26;
+const int TB_GUNELEVATION_BIN1   = 28;
+const int TB_GUNELEVATION_BIN2   = 30;
+const int TB_GUNELEVATION_PWMB   = 12;
 
 #endif
