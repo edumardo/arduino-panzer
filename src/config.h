@@ -1,5 +1,14 @@
-#ifndef PINOUT_H
-#define PINOUT_H
+#ifndef CONFIG_H
+#define CONFIG_H
+
+/* Center value of the transmitter stick */
+const int CENTER_STICK_VALUE = 128;
+
+/* Minimal value of the transmitter stick */
+const int MIN_STICK_VALUE = 0; 
+
+/* Maximal value of the transmitter stick */
+const int MAX_STICK_VALUE = 255;
 
 /* PS2 pins */
 #define PS2_PIN_DAT A2
@@ -26,5 +35,8 @@ const int TB_TURRETGUN_STBY      = 26;
 const int TB_GUNELEVATION_BIN1   = 28;
 const int TB_GUNELEVATION_BIN2   = 30;
 const int TB_GUNELEVATION_PWMB   = 12;
+
+/* Airsoft gun */
+const int AIRSOFT_FIRED_INTERRUPT_PIN = 18;
 
 #endif
