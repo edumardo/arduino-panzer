@@ -51,7 +51,7 @@ Hardware:
 
 PWMs:
 
-|Registrer | Pin        | Timer  | Frequency | PWM Freq | Prescaler (* default)---------|
+|Registrer | Pin        | Timer  | Frequency | PWM Freq | Prescaler (* default)         |
 |-------   |----------- |--------|-----------|----------|-------------------------------|
 |TCCR0B    | 4, 13      | Timer0 | 62500 Hz  | 980 Hz   | 1, 8, 64*, 256, 1024          |
 |TCCR1B    | 11, 12     | Timer1 | 31250 Hz  | 490 Hz   | 1, 8, 64*, 256, 1024          |
