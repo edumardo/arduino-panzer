@@ -21,7 +21,7 @@ class DriveDirection {
 
     public:
         DriveDirection();
-        void begin(int pinLeftMotor[4], int pinRightMotor[4], int stickProperties[3]);
+        void begin(DCMotorControllerConfig leftMotorConfig, DCMotorControllerConfig rightMotorConfig, int stickProperties[3]);
         void move(byte stickValueX, byte stickValueY);
         void move(byte padUp, byte padDown, byte padLeft, byte padRight);
         void setMaxVoltagePercentAnalogMove(byte percent);
