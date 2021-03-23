@@ -5,6 +5,7 @@
 SmokeController::SmokeController() {
 
     m_debugMode = false;
+    m_isStarted = false;
     m_behaviour = SmokeGeneratorBehaviour::fixed;
     m_maxGeneratorVoltagePercent = m_maxFanVoltagePercent = 100;
     m_idleGeneratorVoltagePercent = m_idleFanVoltagePercent = 50;
@@ -16,16 +17,16 @@ SmokeController::SmokeController() {
 /**
  * 
  */
-void SmokeController::begin(int pinSmokeGenerator[4], int pinSmokeFan[4], SmokeGeneratorBehaviour behaviour) {
+void SmokeController::begin(DCMotorControllerConfig smokerGeneratorConfig, DCMotorControllerConfig smokerFanConfig , SmokeGeneratorBehaviour behaviour) {
 
     m_behaviour = behaviour;
-    m_pwmGeneratorPin = pinSmokeGenerator[0];
-    m_in1GeneratorPin = pinSmokeGenerator[1];
-    m_in2GeneratorPin = pinSmokeGenerator[2];
-    m_standbyPin = pinSmokeGenerator[3];
-    m_pwmFanPin = pinSmokeFan[0];
-    m_in1FanPin = pinSmokeFan[1];
-    m_in2FanPin = pinSmokeFan[2];
+    m_pwmGeneratorPin = smokerGeneratorConfig.pwmPin;
+    m_in1GeneratorPin = smokerGeneratorConfig.in1Pin;
+    m_in2GeneratorPin = smokerGeneratorConfig.in2Pin;
+    m_standbyPin = smokerGeneratorConfig.standbyPin;
+    m_pwmFanPin = smokerFanConfig.pwmPin;
+    m_in1FanPin = smokerFanConfig.in1Pin;
+    m_in2FanPin = smokerFanConfig.in2Pin;
     pinMode(m_pwmFanPin, OUTPUT);
     pinMode(m_in1GeneratorPin, OUTPUT);
     pinMode(m_in2GeneratorPin, OUTPUT);
@@ -37,14 +38,23 @@ void SmokeController::begin(int pinSmokeGenerator[4], int pinSmokeFan[4], SmokeG
 }
 
 /**
+ *
+ */
+void SmokeController::start() {
+
+    m_isStarted = true;
+}
+/**
  * 
  */
 void SmokeController::idle() {
 
-    setGeneratorSpeed(m_idlePwmFixedGenerator);
-    setFanSpeed(m_idlePwmFixedFan);
+    if (m_isStarted) {
+        setGeneratorSpeed(m_idlePwmFixedGenerator);
+        setFanSpeed(m_idlePwmFixedFan);
 
-    if (m_debugMode) printDebug(m_idlePwmFixedGenerator, m_idlePwmFixedFan);
+        if (m_debugMode) printDebug(m_idlePwmFixedGenerator, m_idlePwmFixedFan);
+    }
 }
 
 /**
@@ -174,7 +184,7 @@ void SmokeController::disable() {
 void SmokeController::printDebug(byte pwmGenerator, byte pwmFan) {
 
     Serial.print("[SmokeController ");
-    Serial.print(m_behaviour);
+    Serial.print(m_behaviour == 0 ? "proportional" : "fixed");
     Serial.print("][Generator pwm: ");
     Serial.print(pwmGenerator);
     Serial.print("][Fan pwm: ");

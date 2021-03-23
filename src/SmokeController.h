@@ -12,6 +12,7 @@ class SmokeController {
 
     private:
         bool m_debugMode;                                                   // Debug mode
+        bool m_isStarted;                                                   // is smoker started?
         SmokeGeneratorBehaviour m_behaviour;                                // Proportional smoke or fixed
         byte m_minProportional, m_maxProportional;                          // [m_minProportional, m_maxProportional] range for proportional smoke
         byte m_maxGeneratorVoltagePercent, m_maxFanVoltagePercent;          // Max voltage applied from battery
@@ -32,7 +33,8 @@ class SmokeController {
 
     public:
         SmokeController();
-        void begin(int pinSmokeGenerator[4], int pinSmokeFan[4], SmokeGeneratorBehaviour behaviour);
+        void begin(DCMotorControllerConfig smokerGeneratorConfig, DCMotorControllerConfig smokerFanConfig , SmokeGeneratorBehaviour behaviour);
+        void start();
         void idle();
         void smoke(byte speedX, byte speedY);
         void setProportional(byte minProportional, byte maxProportional);
