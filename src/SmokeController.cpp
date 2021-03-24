@@ -62,7 +62,8 @@ void SmokeController::idle() {
  */
 void SmokeController::smoke(byte speedX, byte speedY) {
 
-    (m_behaviour == fixed) ? fixedSmoke() : proportionalSmoke(speedX, speedY);
+    if (m_isStarted)
+        (m_behaviour == fixed) ? fixedSmoke() : proportionalSmoke(speedX, speedY);
 }
 
 /**
