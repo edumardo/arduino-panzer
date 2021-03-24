@@ -1,20 +1,29 @@
 #include <PS2X_lib.h>
 #include <arduino-timer.h>
 #include "src/main.h"
-/*********************************************************************************************************************/
-int ps2xConfigError = 0;
-int ps2xType = 0;
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------
 DriveDirection    driveDirection;
 DCMotorController turretRotation;
 DCMotorController gunElevation;
 SmokeController   smoker;
 GunController     airsoftGun;
 TBSMiniController soundUnit;
+
 PS2X ps2x;
+byte ps2xConfigError = 0;
+byte ps2xType = 0;
+byte controllerTurretRotation;
+byte controllerGunElevation;
+byte controllerSteeringThrottle;
+byte controllerSteeringTurn;
+byte controllerDriveThrottle;
+byte controllerDriveReverse;
+byte controllerDriveLeft;
+byte controllerDriveRight;
+
 Timer<> APTimer;
 byte simuInterrupt = 42;
-/*********************************************************************************************************************/
+//--------------------------------------------------------------------------------------------------------------------------------------------------
 void setup() {
 
     Serial.begin(115200);
@@ -26,13 +35,13 @@ void setup() {
     /* Turret rotation */
     DCMotorControllerConfig turretRotationConfig {TB_TURRETROTATION_PWM_PRESCALER, TB_TURRETROTATION_PWM, TB_TURRETROTATION_IN1, TB_TURRETROTATION_IN2, TB_TURRETGUN_STBY};
     turretRotation.begin(turretRotationConfig, stickProperties);
-    turretRotation.setMaxVoltagePercent(100);
+    turretRotation.setMaxVoltagePercent(TURRETROTARION_MAX_VOLTAGE_PERCENT);
     turretRotation.enableDebug("Turret rotation");
 
     /* Gun elevation */
     DCMotorControllerConfig gunElevationConfig = {TB_GUNELEVATION_PWM_PRESCALER, TB_GUNELEVATION_PWM, TB_GUNELEVATION_IN1, TB_GUNELEVATION_IN2, TB_TURRETGUN_STBY};
     gunElevation.begin(gunElevationConfig, stickProperties);
-    gunElevation.setMaxVoltagePercent(100);
+    gunElevation.setMaxVoltagePercent(GUNELEVATION_MAX_VOLTAGE_PERCENT);
     gunElevation.enableDebug("Gun elevation");
 
     /* Drive direction */
@@ -40,8 +49,8 @@ void setup() {
     DCMotorControllerConfig rightMotorConfig = {TB_DRIVE_BPWM_PRESCALER, TB_DRIVE_BPWM, TB_DRIVE_BIN1, TB_DRIVE_BIN2, TB_DRIVE_STBY};
     driveDirection.begin(leftMotorConfig, rightMotorConfig, stickProperties);
     driveDirection.invertYStick();
-    driveDirection.setMaxVoltagePercentAnalogMove(100);
-    driveDirection.setMaxVoltagePercentPadMove(80);
+    driveDirection.setMaxVoltagePercentAnalogMove(DRIVE_MAX_VOLTAGE_PERCENT_ANALOG);
+    driveDirection.setMaxVoltagePercentPadMove(DRIVE_MAX_VOLTAGE_PERCENT_PAD);
     driveDirection.enableDebug();
 
     /* Airsoft gun */
@@ -54,15 +63,14 @@ void setup() {
     DCMotorControllerConfig smokerGeneratorConfig = {TB_SMOKE_GENERATOR_PWM_PRESCALER, TB_SMOKE_GENERATOR_PWM, TB_SMOKE_GENERATOR_AIN1, TB_SMOKE_GENERATOR_AIN2, TB_SMOKE_GENERATORFAN_STBY};
     DCMotorControllerConfig smokerFanConfig = {TB_SMOKE_FAN_PWM_PRESCALER, TB_SMOKE_FAN_PWM, TB_SMOKE_FAN_IN1, TB_SMOKE_FAN_IN2, TB_SMOKE_GENERATORFAN_STBY};
     smoker.begin(smokerGeneratorConfig, smokerFanConfig, SmokeGeneratorBehaviour::proportional);
-    smoker.setGeneratorVoltagesPercent(100, 50, 100);
-    smoker.setFanVoltagesPercent(100, 50, 50);
+    smoker.setGeneratorVoltagesPercent(SMOKE_GENERATOR_MAX_VOLTAGE_PERCENT, SMOKE_GENERATOR_IDLE_VOLTAGE_PERCENT, SMOKE_GENERATOR_MOVING_VOLTAGE_PERCENT);
+    smoker.setFanVoltagesPercent(SMOKE_FAN_MAX_VOLTAGE_PERCENT, SMOKE_FAN_IDLE_VOLTAGE_PERCENT, SMOKE_FAN_MOVING_VOLTAGE_PERCENT);
     smoker.setProportional(CENTER_STICK_VALUE, abs(MAX_STICK_VALUE));
     smoker.enableDebug();
     smoker.idle();
 
-
     delay(300);  //added delay to give wireless ps2 module some time to startup, before configuring it
-    ps2xConfigError = ps2x.config_gamepad(PS2_PIN_CLK, PS2_PIN_CMD, PS2_PIN_SEL, PS2_PIN_DAT, PS2_PRESSURES, PS2_RUMBLE);
+    ps2xConfigError = ps2x.config_gamepad(PS2_CLK, PS2_CMD, PS2_SEL, PS2_DAT, PS2_PRESSURES, PS2_RUMBLE);
     if (ps2xConfigError == 0){
         Serial.println("Found Controller, configured successful ");
     } else {
@@ -82,27 +90,31 @@ void setup() {
     pinMode(simuInterrupt, OUTPUT);
 }
 
+void readPS2Controller() {
+
+    ps2x.read_gamepad();
+    controllerTurretRotation   = ps2x.Analog(CONTROLLER_TURRET_ROTATION);
+    controllerGunElevation     = ps2x.Analog(CONTROLLER_GUN_ELEVATION);
+    controllerSteeringThrottle = ps2x.Analog(CONTROLLER_STEERING_THROTTLE);
+    controllerSteeringTurn     = ps2x.Analog(CONTROLLER_STEERING_TURN);
+    controllerDriveThrottle    = ps2x.Analog(CONTROLLER_DRIVE_THROTTLE);
+    controllerDriveReverse     = ps2x.Analog(CONTROLLER_DRIVE_REVERSE);
+    controllerDriveLeft        = ps2x.Analog(CONTROLLER_DRIVE_LEFT);
+    controllerDriveRight       = ps2x.Analog(CONTROLLER_DRIVE_RIGHT);
+}
+
 void loop() {
 
     if(ps2xConfigError == 1)
         return;
 
+    readPS2Controller();
     APTimer.tick();
 
-    ps2x.read_gamepad();
-    byte pss_rx         = ps2x.Analog(PSS_RX);
-    byte pss_ry         = ps2x.Analog(PSS_RY);
-    byte pss_lx         = ps2x.Analog(PSS_LX);
-    byte pss_ly         = ps2x.Analog(PSS_LY);
-    byte psab_pad_up    = ps2x.Analog(PSAB_PAD_UP);
-    byte psab_pad_down  = ps2x.Analog(PSAB_PAD_DOWN);
-    byte psab_pad_left  = ps2x.Analog(PSAB_PAD_LEFT);
-    byte psab_pad_right = ps2x.Analog(PSAB_PAD_RIGHT);
-
     /* Turret rotation and gun elevation */
-    if ((pss_rx != CENTER_STICK_VALUE) || (pss_ry != CENTER_STICK_VALUE)) {
-        turretRotation.move(pss_rx);
-        gunElevation.move(pss_ry);
+    if ((controllerTurretRotation != CENTER_STICK_VALUE) || (controllerGunElevation != CENTER_STICK_VALUE)) {
+        turretRotation.move(controllerTurretRotation);
+        gunElevation.move(controllerGunElevation);
         soundUnit.playTurretRotation();
     }
     else {
@@ -112,15 +124,15 @@ void loop() {
     }
 
     /* Drive direction */
-    if(pss_lx != CENTER_STICK_VALUE || pss_ly != CENTER_STICK_VALUE) {
-        driveDirection.move(pss_lx, pss_ly);
-        soundUnit.setEngineSpeed(pss_lx);
-        smoker.smoke(pss_lx, pss_ly);
+    if(controllerSteeringThrottle != CENTER_STICK_VALUE || controllerSteeringTurn != CENTER_STICK_VALUE) {
+        driveDirection.move(controllerSteeringThrottle, controllerSteeringTurn);
+        soundUnit.setEngineSpeed(controllerSteeringThrottle);
+        smoker.smoke(controllerSteeringThrottle, controllerSteeringTurn);
     }
-    else if (ps2x.Button(PSB_PAD_UP) || ps2x.Button(PSB_PAD_RIGHT) || ps2x.Button(PSB_PAD_LEFT) || ps2x.Button(PSB_PAD_DOWN) ) {
-        driveDirection.move(psab_pad_up, psab_pad_down, psab_pad_left, psab_pad_right);
+    else if (ps2x.Button(CONTROLLER_BUTTON_DRIVE_THROTTLE) || ps2x.Button(CONTROLLER_BUTTON_DRIVE_RIGHT) || ps2x.Button(CONTROLLER_BUTTON_DRIVE_LEFT) || ps2x.Button(CONTROLLER_BUTTON_DRIVE_REVERSE) ) {
+        driveDirection.move(controllerDriveThrottle, controllerDriveReverse, controllerDriveLeft, controllerDriveRight);
         soundUnit.setEngineSpeed(90);        // [0, 127]
-        smoker.smoke(PSB_PAD_UP, PSB_PAD_UP);
+        smoker.smoke(CONTROLLER_BUTTON_DRIVE_THROTTLE, CONTROLLER_BUTTON_DRIVE_THROTTLE);
     }
     else {
         driveDirection.disableMotors();
@@ -128,15 +140,13 @@ void loop() {
         smoker.idle();
     }
 
-    /* Shoot button */
-    if (ps2x.Button(PSB_PINK)) {
-            if (airsoftGun.isFired()) {
-                airsoftGun.readyToFire();
-                soundUnit.playCannon();
-            }
-            else {
-                airsoftGun.fire();
-            }
+    if (ps2x.Button(CONTROLLER_FIRE_GUN)) {
+        if (airsoftGun.isFired()) {
+            airsoftGun.readyToFire();
+            soundUnit.playCannon();
+        }
+        else {
+            airsoftGun.fire();
         }
     }
 
@@ -150,8 +160,7 @@ void loop() {
         }
     }
 
-    /* Start engine */
-    if (ps2x.Button(PSB_GREEN)) {}
+    if (ps2x.Button(CONTROLLER_STARTSTOP)) {
         if (!soundUnit.isEngingeRunning()) {
             soundUnit.startEngine();
             smoker.start();
