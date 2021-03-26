@@ -1,4 +1,6 @@
 #include "SmokeController.h"
+#include "Utilities.h"
+
 /**
  * 
  */
@@ -35,6 +37,8 @@ void SmokeController::begin(DCMotorControllerConfig smokerGeneratorConfig, DCMot
     pinMode(m_in1FanPin, OUTPUT);
     pinMode(m_in2FanPin, OUTPUT);
     disable();
+    setPWMPrescaler(m_pwmGeneratorPin, smokerGeneratorConfig.pwmPrescaler);
+    setPWMPrescaler(m_pwmFanPin, smokerFanConfig.pwmPrescaler);
 }
 
 /**

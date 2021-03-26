@@ -26,7 +26,6 @@ class DCMotorController {
         uint8_t m_maxVoltagePercent;
         String m_debugName;
         void printDEC(String label, int value);
-        void setPWMPrescaler(uint8_t pin, uint16_t prescale);
 
     public:
         DCMotorController();
