@@ -55,7 +55,7 @@ void TBSMiniController::idleEngine() {
  */
 void TBSMiniController::setEngineSpeed(int speed) {
 
-    int m_currentSpeed = map(speed, m_minSpeed, m_maxSpeed, m_PROP1_IDLE, m_PROP1_FULL_SPEED);
+    m_currentSpeed = map(speed, m_minSpeed, m_maxSpeed, m_PROP1_IDLE, m_PROP1_FULL_SPEED);
     m_prop1.writeMicroseconds(m_currentSpeed);
 
     if (m_debugMode) printDebug();
