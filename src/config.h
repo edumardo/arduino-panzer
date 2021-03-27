@@ -2,6 +2,7 @@
 #define CONFIG_H
 
 #include <PS2X_lib.h>
+#include "SmokeController.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 // PS2 Transmitter
@@ -98,6 +99,10 @@ const uint8_t SMOKE_GENERATOR_MOVING_VOLTAGE_PERCENT = 100;
 const uint8_t SMOKE_FAN_MAX_VOLTAGE_PERCENT    = 100;
 const uint8_t SMOKE_FAN_IDLE_VOLTAGE_PERCENT   =  50;
 const uint8_t SMOKE_FAN_MOVING_VOLTAGE_PERCENT =  50;
+
+// Smoke type: SmokeGeneratorBehaviour::proportional or SmokeGeneratorBehaviour::fixed
+const SmokeGeneratorBehaviour SMOKE_BEHAVIOUR = SmokeGeneratorBehaviour::proportional;
+
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 // Dasmikro TBS Mini sound unit
