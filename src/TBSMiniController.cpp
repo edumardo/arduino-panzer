@@ -1,7 +1,7 @@
 #include "TBSMiniController.h"
 
 /**
- * 
+ *
  */
 TBSMiniController::TBSMiniController() {
 
@@ -11,7 +11,7 @@ TBSMiniController::TBSMiniController() {
 }
 
 /**
- * 
+ *
  */
 void TBSMiniController::begin(int prop1Pin, int prop2Pin, int minSpeed, int maxSpeed) {
 
@@ -26,43 +26,44 @@ void TBSMiniController::begin(int prop1Pin, int prop2Pin, int minSpeed, int maxS
     m_prop2.writeMicroseconds(m_PROP2_SWITCH_OFF);
 }
 
-/**
- * 
- */
-void TBSMiniController::startEngine() {
+void TBSMiniController::toggleEngine() {
 
-    m_prop2.writeMicroseconds(m_PROP2_SWITCH_1);
+    m_isEngineRunning = !m_isEngineRunning;
+    m_prop2.writeMicroseconds(m_isEngineRunning ? m_PROP2_SWITCH_1 : m_PROP2_SWITCH_OFF);
+
+    if (m_debugMode) {
+        Serial.print("[TBSMiniController from ");
+        Serial.print(!m_isEngineRunning ? "on" : "off");
+        Serial.println(!m_isEngineRunning ? " to off]" : " to on]");
+    }
 }
 
 /**
- * 
- */
-void TBSMiniController::stopEngine() {
-
-    m_prop2.writeMicroseconds(m_PROP2_SWITCH_OFF);
-}
-
-/**
- * 
+ *
  */
 void TBSMiniController::idleEngine() {
 
-    m_prop1.writeMicroseconds(m_PROP1_IDLE);
+    if (m_isEngineRunning) m_prop1.writeMicroseconds(m_PROP1_IDLE);
+
+    if (m_debugMode) printDebug();
+
 }
 
 /**
- * 
+ *
  */
 void TBSMiniController::setEngineSpeed(int speed) {
 
-    m_currentSpeed = map(speed, m_minSpeed, m_maxSpeed, m_PROP1_IDLE, m_PROP1_FULL_SPEED);
-    m_prop1.writeMicroseconds(m_currentSpeed);
+    if (m_isEngineRunning) {
+        m_currentSpeed = map(speed, m_minSpeed, m_maxSpeed, m_PROP1_IDLE, m_PROP1_FULL_SPEED);
+        m_prop1.writeMicroseconds(m_currentSpeed);
+    }
 
     if (m_debugMode) printDebug();
 }
 
 /**
- * 
+ *
  */
 bool TBSMiniController::isEngingeRunning() {
 
@@ -70,7 +71,7 @@ bool TBSMiniController::isEngingeRunning() {
 }
 
 /**
- * 
+ *
  */
 void TBSMiniController::enableDebug() {
 
@@ -78,7 +79,7 @@ void TBSMiniController::enableDebug() {
 }
 
 /**
- * 
+ *
  */
 void TBSMiniController::disableDebug() {
 
@@ -86,31 +87,33 @@ void TBSMiniController::disableDebug() {
 }
 
 /**
- * 
+ *
  */
 void TBSMiniController::printDebug() {
 
-    Serial.print("[TBSMiniController][Speed ");
+    Serial.print("[TBSMiniController ");
+    Serial.print(m_isEngineRunning ? "on" : "off");
+    Serial.print("][Speed ");
     Serial.print(m_currentSpeed);
     Serial.println("]");
 }
 
 /**
- * 
+ *
  */
 void TBSMiniController::playTurretRotation() {
 
 }
 
 /**
- * 
+ *
  */
 void TBSMiniController::stopTurretRotation() {
 
 }
 
 /**
- * 
+ *
  */
 void TBSMiniController::playCannon() {
 
@@ -118,7 +121,7 @@ void TBSMiniController::playCannon() {
 }
 
 /**
- * 
+ *
  */
 void TBSMiniController::stopCannon() {
 

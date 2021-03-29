@@ -31,8 +31,7 @@ class TBSMiniController {
     public:
         TBSMiniController();
         void begin(int prop1Pin, int prop2Pin, int minSpeed, int maxSpeed);
-        void startEngine();
-        void stopEngine();
+        void toggleEngine();
         void idleEngine();
         void setEngineSpeed(int speed);
         bool isEngingeRunning();
