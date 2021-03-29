@@ -34,7 +34,7 @@ class SmokeController {
     public:
         SmokeController();
         void begin(DCMotorControllerConfig smokerGeneratorConfig, DCMotorControllerConfig smokerFanConfig , SmokeGeneratorBehaviour behaviour);
-        void start();
+        void toggle();
         void idle();
         void smoke(byte speedX, byte speedY);
         void setProportional(byte minProportional, byte maxProportional);

@@ -2,7 +2,7 @@
 #include "Utilities.h"
 
 /**
- * 
+ *
  */
 SmokeController::SmokeController() {
 
@@ -17,7 +17,7 @@ SmokeController::SmokeController() {
 }
 
 /**
- * 
+ *
  */
 void SmokeController::begin(DCMotorControllerConfig smokerGeneratorConfig, DCMotorControllerConfig smokerFanConfig , SmokeGeneratorBehaviour behaviour) {
 
@@ -44,25 +44,35 @@ void SmokeController::begin(DCMotorControllerConfig smokerGeneratorConfig, DCMot
 /**
  *
  */
-void SmokeController::start() {
+void SmokeController::toggle() {
 
-    m_isStarted = true;
+    if (m_isStarted) disable();
+
+    m_isStarted = !m_isStarted;
+
+    if (m_debugMode) {
+        Serial.print("[SmokeController from ");
+        Serial.print(!m_isStarted ? "on" : "off");
+        Serial.println(!m_isStarted ? " to off]" : " to on]");
+    }
 }
+
 /**
- * 
+ *
  */
 void SmokeController::idle() {
 
     if (m_isStarted) {
         setGeneratorSpeed(m_idlePwmFixedGenerator);
         setFanSpeed(m_idlePwmFixedFan);
-
-        if (m_debugMode) printDebug(m_idlePwmFixedGenerator, m_idlePwmFixedFan);
     }
+
+    if (m_debugMode) printDebug(m_idlePwmFixedGenerator, m_idlePwmFixedFan);
+
 }
 
 /**
- * 
+ *
  */
 void SmokeController::smoke(byte speedX, byte speedY) {
 
@@ -71,7 +81,7 @@ void SmokeController::smoke(byte speedX, byte speedY) {
 }
 
 /**
- * 
+ *
  */
 void SmokeController::setProportional(byte minProportional, byte maxProportional) {
 
@@ -80,7 +90,7 @@ void SmokeController::setProportional(byte minProportional, byte maxProportional
 }
 
 /**
- * 
+ *
  */
 void SmokeController::setGeneratorVoltagesPercent(byte maxGeneratorVoltagePercent, byte idleGeneratorVoltagePercent, byte movinGeneratorVoltagePercent) {
 
@@ -92,7 +102,7 @@ void SmokeController::setGeneratorVoltagesPercent(byte maxGeneratorVoltagePercen
 }
 
 /**
- * 
+ *
  */
 void SmokeController::setFanVoltagesPercent(byte maxFanVoltagePercent, byte idleFanVoltagePercent, byte movinFanVoltagePercent) {
 
@@ -104,7 +114,7 @@ void SmokeController::setFanVoltagesPercent(byte maxFanVoltagePercent, byte idle
 }
 
 /**
- * 
+ *
  */
 void SmokeController::enableDebug() {
 
@@ -112,7 +122,7 @@ void SmokeController::enableDebug() {
 }
 
 /**
- * 
+ *
  */
 void SmokeController::disableDebug() {
 
@@ -120,7 +130,7 @@ void SmokeController::disableDebug() {
 }
 
 /**
- * 
+ *
  */
 void SmokeController::fixedSmoke() {
 
@@ -131,7 +141,7 @@ void SmokeController::fixedSmoke() {
 }
 
 /**
- * 
+ *
  */
 void SmokeController::proportionalSmoke(byte speedX, byte speedY) {
 
@@ -148,7 +158,7 @@ void SmokeController::proportionalSmoke(byte speedX, byte speedY) {
 }
 
 /**
- * 
+ *
  */
 void SmokeController::setGeneratorSpeed(byte pwmGenerator) {
 
@@ -159,7 +169,7 @@ void SmokeController::setGeneratorSpeed(byte pwmGenerator) {
 }
 
 /**
- * 
+ *
  */
 void SmokeController::setFanSpeed(byte pwmFan) {
 
@@ -170,7 +180,7 @@ void SmokeController::setFanSpeed(byte pwmFan) {
 }
 
 /**
- * 
+ *
  */
 void SmokeController::disable() {
 
@@ -184,11 +194,12 @@ void SmokeController::disable() {
 }
 
 /**
- * 
+ *
  */
 void SmokeController::printDebug(byte pwmGenerator, byte pwmFan) {
 
-    Serial.print("[SmokeController ");
+    Serial.print("[SmokeController");
+    Serial.print(m_isStarted ? " on " : " off ");
     Serial.print(m_behaviour == 0 ? "proportional" : "fixed");
     Serial.print("][Generator pwm: ");
     Serial.print(pwmGenerator);
