@@ -1,7 +1,7 @@
 #include "Utilities.h"
 
 /**
- * 
+ *
  */
 void setPWMPrescaler(uint8_t pin, uint16_t prescale) {
 
@@ -42,4 +42,59 @@ void setPWMPrescaler(uint8_t pin, uint16_t prescale) {
     } else if (pin == 44 || pin == 45 || pin == 46) {
         TCCR5B = TCCR5B & 0b11111000 | mode;
     }
+}
+
+/**
+ *
+ */
+void printSpaces(int n) {
+
+    for (int i = 0; i < n; i++) {
+        Serial.print(" ");
+    }
+}
+
+/**
+ *
+ */
+void printByte(byte b) {
+
+    if (b < 10) {
+        printSpaces(2);
+    } else if (b < 100) {
+        printSpaces(1);
+    }
+    Serial.print(b);
+}
+
+/**
+ *
+ */
+void printAnalogController(String name, byte x, byte y) {
+
+        Serial.print("[");
+        Serial.print(name);
+        Serial.print(" ");
+        printByte(x);
+        Serial.print(" | ");
+        printByte(y);
+        Serial.print("]");
+}
+
+/**
+ *
+ */
+void printUDLRController(byte up, byte down, byte left, byte right) {
+
+        Serial.print("[");
+        Serial.print("UDLR");
+        Serial.print(" ");
+        printByte(up);
+        Serial.print(" | ");
+        printByte(down);
+        Serial.print(" | ");
+        printByte(left);
+        Serial.print(" | ");
+        printByte(right);
+        Serial.print("]");
 }
