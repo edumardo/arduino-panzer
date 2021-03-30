@@ -41,7 +41,6 @@ void GunController::fire() {
     enableAirsoftInterrupt();
     m_taskAirsoftInterrupt = m_APTimer->in(5000, stopAirsoftMotor);
     m_isFiring = true;
-    if (m_APTimer->empty()) { Serial.println("no active tasks"); }
 }
 
 void GunController::startAirsoftMotor() {
