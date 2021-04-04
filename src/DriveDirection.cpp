@@ -84,12 +84,10 @@ void DriveDirection::move(byte padUp, byte padDown, byte padLeft, byte padRight)
         m_rightMotor.move(-m_diffSteerComputeRange);
     }
     else if (padLeft) {
-        m_leftMotor.disableMotor();
         m_rightMotor.move(m_diffSteerComputeRange);
     }
     else if (padRight) {
         m_leftMotor.move(m_diffSteerComputeRange);
-        m_rightMotor.disableMotor();
     }
 
     if (m_debugMode) {
