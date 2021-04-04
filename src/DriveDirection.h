@@ -2,7 +2,7 @@
 #define DRIVEDIRECTION_H
 
 #include "DCMotorController.h"
-#include "DifferentialSteering.h"
+#include <DifferentialSteering.h>
 
 class DriveDirection {
 
