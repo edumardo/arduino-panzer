@@ -24,9 +24,9 @@ Hardware:
 
 ## Dependencies
 
-* [DifferentialSteering](https://github.com/edumardo/DifferentialSteering)
-* [PS2X_lib](https://github.com/madsci1016/Arduino-PS2X)
-* [arduino-timer](https://github.com/contrem/arduino-timer)
+* [DifferentialSteering](https://github.com/edumardo/DifferentialSteering), available in the Arduino IDE [library manager](https://www.arduino.cc/en/guide/libraries#).
+* [PS2X_lib](https://github.com/madsci1016/Arduino-PS2X).
+* [arduino-timer](https://github.com/contrem/arduino-timer), available in the Arduino IDE [library manager](https://www.arduino.cc/en/guide/libraries#).
 
 ## Features
 
