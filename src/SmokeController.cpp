@@ -74,10 +74,10 @@ void SmokeController::idle() {
 /**
  *
  */
-void SmokeController::smoke(byte speedX, byte speedY) {
+void SmokeController::smoke(byte speed) {
 
     if (m_isStarted)
-        (m_behaviour == fixed) ? fixedSmoke() : proportionalSmoke(speedX, speedY);
+        (m_behaviour == fixed) ? fixedSmoke() : proportionalSmoke(speed);
 }
 
 /**
@@ -143,14 +143,10 @@ void SmokeController::fixedSmoke() {
 /**
  *
  */
-void SmokeController::proportionalSmoke(byte speedX, byte speedY) {
+void SmokeController::proportionalSmoke(byte speed) {
 
-    byte absX = (speedX < m_minProportional) ? m_minProportional - speedX  + m_minProportional - 1 : speedX;
-    byte absY = (speedY < m_minProportional) ? m_minProportional - speedY  + m_minProportional - 1 : speedY;
-    byte absSpeed = max(absX, absY);
-
-    byte proportionalPwmGenerartor = map(absSpeed, m_minProportional, m_maxProportional, m_idlePwmFixedGenerator, m_movingPwmFixedGenerator);
-    byte proportionalPwmFan = map(absSpeed, m_minProportional, m_maxProportional, m_idlePwmFixedFan, m_movingPwmFixedFan);
+    byte proportionalPwmGenerartor = map(speed, m_minProportional, m_maxProportional, m_idlePwmFixedGenerator, m_movingPwmFixedGenerator);
+    byte proportionalPwmFan = map(speed, m_minProportional, m_maxProportional, m_idlePwmFixedFan, m_movingPwmFixedFan);
     setGeneratorSpeed(proportionalPwmGenerartor);
     setFanSpeed(proportionalPwmFan);
 

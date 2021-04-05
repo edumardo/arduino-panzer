@@ -25,7 +25,7 @@ class SmokeController {
         byte m_movingPwmFixedGenerator, m_movingPwmFixedFan;                // Fixed PWM output while moving
 
         void fixedSmoke();
-        void proportionalSmoke(byte speedX, byte speedY);
+        void proportionalSmoke(byte speed);
         void setGeneratorSpeed(byte pwmGenerator);
         void setFanSpeed(byte pwmFan);
         void disable();
@@ -36,7 +36,7 @@ class SmokeController {
         void begin(DCMotorControllerConfig smokerGeneratorConfig, DCMotorControllerConfig smokerFanConfig , SmokeGeneratorBehaviour behaviour);
         void toggle();
         void idle();
-        void smoke(byte speedX, byte speedY);
+        void smoke(byte speed);
         void setProportional(byte minProportional, byte maxProportional);
         void setGeneratorVoltagesPercent(byte maxGeneratorVoltagePercent, byte idleGeneratorVoltagePercent, byte movinGeneratorVoltagePercent);
         void setFanVoltagesPercent(byte maxFanVoltagePercent, byte idleFanVoltagePercent, byte movinFanVoltagePercent);
