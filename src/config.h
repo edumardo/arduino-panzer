@@ -36,7 +36,11 @@ const bool PS2_RUMBLE     = true;
 #define CONTROLLER_BUTTON_DRIVE_RIGHT    PSB_PAD_RIGHT
 #define CONTROLLER_FIRE_GUN              PSB_PINK
 #define CONTROLLER_STARTSTOP             PSB_START
+#define CONTROLLER_VOLUMEUP              PSB_L2
+#define CONTROLLER_VOLUMEDOWN            PSB_R2
 
+// Miliseconds to debounce buttons
+const int CONTROLLER_MS_DEBOUNCE = 500;
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 // Drive direction
 //--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -109,10 +113,17 @@ const SmokeGeneratorBehaviour SMOKE_BEHAVIOUR = SmokeGeneratorBehaviour::proport
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Dasmikro TBS Mini sound unit servo pins
-const uint8_t TBSMINI_PROP1 = 49;
-const uint8_t TBSMINI_PROP2 = 51;
-const uint8_t TBSMINI_PROP3 = 53;
+const uint8_t TBSMINI_PROP1 = 41;
+const uint8_t TBSMINI_PROP2 = 43;
+const uint8_t TBSMINI_PROP3 = 45;
 
+// Sounds asigned to PROP3 input (Coder 12-Key).
+const uint8_t TBSMINI_SOUND_TURRET_ROTATION  =  1;
+const uint8_t TBSMINI_SOUND_GUN_ELEVATION    =  2;
+const uint8_t TBSMINI_SOUND_GUN_FIRE         =  3;
+const uint8_t TBSMINI_SOUND_MACHINE_GUN_FIRE =  4;
+const uint8_t TBSMINI_SOUND_VOLUME_UP        = 15;
+const uint8_t TBSMINI_SOUND_VOLUME_DOWN      = 16;
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 // Airsoft gun
 //--------------------------------------------------------------------------------------------------------------------------------------------------
