@@ -5,13 +5,13 @@
 #include "SmokeController.h"
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
-// PS2 Transmitter
+// PS2 Radio
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Stick properties
-const int MIN_STICK_VALUE    =   0;
-const int CENTER_STICK_VALUE = 128;
-const int MAX_STICK_VALUE    = 255;
+const int PS2_MIN_STICK_VALUE    =   0;
+const int PS2_CENTER_STICK_VALUE = 128;
+const int PS2_MAX_STICK_VALUE    = 255;
 
 // PS2 pins
 const uint8_t PS2_DAT =   A2;

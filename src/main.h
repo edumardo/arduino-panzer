@@ -6,3 +6,4 @@
 #include "SmokeController.h"
 #include "GunController.h"
 #include <TBSMini.h>
+#include "PS2Radio.h"

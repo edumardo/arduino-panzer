@@ -8,46 +8,33 @@
 class ArduinoPanzer {
 
     private:
-        PS2X m_ps2x;
-        byte m_ps2xConfigError;
-        int m_stickProperties[3] = {MIN_STICK_VALUE, MAX_STICK_VALUE, CENTER_STICK_VALUE};
-        byte m_controllerTurretRotation;
-        byte m_controllerGunElevation;
-        byte m_controllerSteeringThrottle;
-        byte m_controllerSteeringTurn;
-        byte m_controllerDriveThrottle;
-        byte m_controllerDriveReverse;
-        byte m_controllerDriveLeft;
-        byte m_controllerDriveRight;
-
+        PS2Radio            m_ps2x;
         DriveDirection      m_driveDirection;
         DCMotorController   m_turretRotation;
         DCMotorController   m_gunElevation;
         SmokeController   * m_smoker;
         GunController     * m_airsoftGun;
         TBSMini           * m_soundUnit;
-
-        Timer<> * m_APTimer;
-
-        bool m_debugMode;
+        Timer<>           * m_APTimer;
+        bool                m_debugMode;
 
     public:
         ArduinoPanzer();
         void toggleDebug(bool debugMode);
         void begin(Timer<> * APTimer);
-        void initController();
-        void readController();
-        bool foundController();
-        bool controllerButton(uint16_t button);
-        byte controllerTurretRotation();
-        byte controllerGunElevation();
-        byte controllerSteeringThrottle();
-        byte controllerSteeringTurn();
-        byte controllerDriveThrottle();
-        byte controllerDriveReverse();
-        byte controllerDriveLeft();
-        byte controllerDriveRight();
-        byte maxControllerSpeed();
+        void initRadio();
+        void readRadio();
+        bool foundRadio();
+        bool radioButton(uint16_t button);
+        int radioTurretRotation();
+        int radioGunElevation();
+        int radioSteeringThrottle();
+        int radioSteeringTurn();
+        int radioDriveThrottle();
+        int radioDriveReverse();
+        int radioDriveLeft();
+        int radioDriveRight();
+        int maxRadioSpeed();
         void initDriveDirection();
         void initTurretRotation();
         void initGunElevation();

@@ -21,23 +21,23 @@ void setup() {
     tank.initSmoker();
 
     delay(300);  //added delay to give wireless ps2 module some time to startup, before configuring it
-    tank.initController();
+    tank.initRadio();
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 void loop() {
 
-    if (tank.foundController() == false)
+    if (tank.foundRadio() == false)
         return;
 
     APTimer.tick();
 
-    tank.readController();
+    tank.readRadio();
 
     /* Turret rotation and gun elevation */
-    if ((tank.controllerTurretRotation() != CENTER_STICK_VALUE) || (tank.controllerGunElevation() != CENTER_STICK_VALUE)) {
-        tank.turretRotation().move(tank.controllerTurretRotation());
-        tank.gunElevation().move(tank.controllerGunElevation());
+    if ((tank.radioTurretRotation() != PS2_CENTER_STICK_VALUE) || (tank.radioGunElevation() != PS2_CENTER_STICK_VALUE)) {
+        tank.turretRotation().move(tank.radioTurretRotation());
+        tank.gunElevation().move(tank.radioGunElevation());
         tank.soundUnit()->playSound(TBSMINI_SOUND_TURRET_ROTATION);
     }
     else {
@@ -46,15 +46,15 @@ void loop() {
     }
 
     /* Analog stick driving */
-    if(tank.controllerSteeringThrottle() != CENTER_STICK_VALUE || tank.controllerSteeringTurn() != CENTER_STICK_VALUE) {
-        tank.driveDirection().move(tank.controllerSteeringThrottle(), tank.controllerSteeringTurn());
-        byte maxControllerSpeed = tank.maxControllerSpeed();
-        tank.soundUnit()->setEngineSpeed(maxControllerSpeed);
-        tank.smoker()->smoke(maxControllerSpeed);
+    if(tank.radioSteeringThrottle() != PS2_CENTER_STICK_VALUE || tank.radioSteeringTurn() != PS2_CENTER_STICK_VALUE) {
+        tank.driveDirection().move(tank.radioSteeringThrottle(), tank.radioSteeringTurn());
+        int maxRadioSpeed = tank.maxRadioSpeed();
+        tank.soundUnit()->setEngineSpeed(maxRadioSpeed);
+        tank.smoker()->smoke(maxRadioSpeed);
     }
     /* Pad driving */
-    else if (tank.controllerButton(CONTROLLER_BUTTON_DRIVE_THROTTLE) || tank.controllerButton(CONTROLLER_BUTTON_DRIVE_RIGHT) || tank.controllerButton(CONTROLLER_BUTTON_DRIVE_LEFT) || tank.controllerButton(CONTROLLER_BUTTON_DRIVE_REVERSE) ) {
-        tank.driveDirection().move(tank.controllerDriveThrottle(), tank.controllerDriveReverse(), tank.controllerDriveLeft(), tank.controllerDriveRight());
+    else if (tank.radioButton(CONTROLLER_BUTTON_DRIVE_THROTTLE) || tank.radioButton(CONTROLLER_BUTTON_DRIVE_RIGHT) || tank.radioButton(CONTROLLER_BUTTON_DRIVE_LEFT) || tank.radioButton(CONTROLLER_BUTTON_DRIVE_REVERSE) ) {
+        tank.driveDirection().move(tank.radioDriveThrottle(), tank.radioDriveReverse(), tank.radioDriveLeft(), tank.radioDriveRight());
         tank.soundUnit()->setEngineSpeed(90);        // [0, 127]
         tank.smoker()->smoke(CONTROLLER_BUTTON_DRIVE_THROTTLE);
     }
@@ -65,24 +65,24 @@ void loop() {
     }
 
     /* Fire gun */
-    if ((tank.controllerButton(CONTROLLER_FIRE_GUN)) && (millis() - debounceFireGunTime > CONTROLLER_MS_DEBOUNCE)) {
+    if ((tank.radioButton(CONTROLLER_FIRE_GUN)) && (millis() - debounceFireGunTime > CONTROLLER_MS_DEBOUNCE)) {
         debounceFireGunTime = millis();
-        tank.soundUnit()->playSound(TBSMINI_SOUND_GUN_FIRE);
+        tank.soundUnit()->playSound(1);
 
     }
 
     /* Start/stop: engine and smoker */
-    if ((tank.controllerButton(CONTROLLER_STARTSTOP)) && (millis() - debounceStartStopTime > CONTROLLER_MS_DEBOUNCE)) {
+    if ((tank.radioButton(CONTROLLER_STARTSTOP)) && (millis() - debounceStartStopTime > CONTROLLER_MS_DEBOUNCE)) {
         debounceStartStopTime = millis();
         tank.soundUnit()->toggleEngine();
         tank.smoker()->toggle();
     }
 
     /* Volume up/down */
-    if ((tank.controllerButton(CONTROLLER_VOLUMEUP)) && (millis() - debounceVolumeTime > CONTROLLER_MS_DEBOUNCE)) {
+    if ((tank.radioButton(CONTROLLER_VOLUMEUP)) && (millis() - debounceVolumeTime > CONTROLLER_MS_DEBOUNCE)) {
         debounceVolumeTime = millis();
         tank.soundUnit()->volumeUp();
-    } else if ((tank.controllerButton(CONTROLLER_VOLUMEDOWN)) && (millis() - debounceVolumeTime > CONTROLLER_MS_DEBOUNCE)) {
+    } else if ((tank.radioButton(CONTROLLER_VOLUMEDOWN)) && (millis() - debounceVolumeTime > CONTROLLER_MS_DEBOUNCE)) {
         debounceVolumeTime = millis();
         tank.soundUnit()->volumeDown();
     }
