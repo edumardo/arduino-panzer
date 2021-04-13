@@ -23,6 +23,14 @@ void ArduinoPanzer::toggleDebug(bool debugMode) {
 void ArduinoPanzer::begin(Timer<> * APTimer) {
 
     m_APTimer = APTimer;
+
+    initRadio();
+    initTurretRotation();
+    initGunElevation();
+    initDriveDirection();
+    initAirsoftGun();
+    initSoundUnit();
+    initSmoker();
 }
 
 void ArduinoPanzer::initRadio() {
@@ -83,7 +91,8 @@ void ArduinoPanzer::initTurretRotation() {
     m_turretRotation.begin(turretRotationConfig, m_ps2x.getStickProperties());
     m_turretRotation.setMaxVoltagePercent(TURRETROTARION_MAX_VOLTAGE_PERCENT);
 
-    if (m_debugMode) m_turretRotation.enableDebug("Turret rotation");
+    if (m_debugMode) 
+        m_turretRotation.enableDebug("Turret rotation");
 }
 
 void ArduinoPanzer::initGunElevation() {
@@ -92,7 +101,8 @@ void ArduinoPanzer::initGunElevation() {
     m_gunElevation.begin(gunElevationConfig, m_ps2x.getStickProperties());
     m_gunElevation.setMaxVoltagePercent(GUNELEVATION_MAX_VOLTAGE_PERCENT);
 
-    if (m_debugMode) m_gunElevation.enableDebug("Gun elevation");
+    if (m_debugMode) 
+        m_gunElevation.enableDebug("Gun elevation");
 }
 
 void ArduinoPanzer::initSmoker() {
@@ -105,7 +115,8 @@ void ArduinoPanzer::initSmoker() {
     m_smoker->setProportional(PS2_CENTER_STICK_VALUE, abs(PS2_MAX_STICK_VALUE));
     m_smoker->idle();       // necesary?
 
-    if (m_debugMode) m_smoker->enableDebug();
+    if (m_debugMode) 
+        m_smoker->enableDebug();
 }
 
 void ArduinoPanzer::initAirsoftGun() {

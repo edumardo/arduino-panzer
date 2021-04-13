@@ -18,6 +18,13 @@ class ArduinoPanzer {
         Timer<>           * m_APTimer;
         bool                m_debugMode;
 
+        void initDriveDirection();
+        void initTurretRotation();
+        void initGunElevation();
+        void initSmoker();
+        void initAirsoftGun();
+        void initSoundUnit();        
+
     public:
         ArduinoPanzer();
         void toggleDebug(bool debugMode);
@@ -35,12 +42,6 @@ class ArduinoPanzer {
         int radioDriveLeft();
         int radioDriveRight();
         int maxRadioSpeed();
-        void initDriveDirection();
-        void initTurretRotation();
-        void initGunElevation();
-        void initSmoker();
-        void initAirsoftGun();
-        void initSoundUnit();
         DriveDirection    driveDirection();
         DCMotorController turretRotation();
         DCMotorController gunElevation();

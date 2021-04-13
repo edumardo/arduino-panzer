@@ -13,15 +13,9 @@ void setup() {
     Serial.begin(115200);
     Serial.println("Inicializamos Serial");
 
-    tank.begin(&APTimer);
-    tank.initTurretRotation();
-    tank.initDriveDirection();
-    tank.initAirsoftGun();
-    tank.initSoundUnit();
-    tank.initSmoker();
-
     delay(300);  //added delay to give wireless ps2 module some time to startup, before configuring it
-    tank.initRadio();
+
+    tank.begin(&APTimer);
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
