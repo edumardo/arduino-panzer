@@ -2,7 +2,14 @@
 #define ARDUINOPANZER_H
 
 #include <Arduino.h>
-#include "main.h"
+#include "config.h"
+#include <arduino-timer.h>
+#include "PS2Radio.h"
+#include "DriveDirection.h"
+#include "DCMotorController.h"
+#include "SmokeController.h"
+#include "GunController.h"
+#include <TBSMini.h>
 #include <arduino-timer.h>
 
 class ArduinoPanzer {
@@ -23,7 +30,7 @@ class ArduinoPanzer {
         void initGunElevation();
         void initSmoker();
         void initAirsoftGun();
-        void initSoundUnit();        
+        void initSoundUnit();
 
     public:
         ArduinoPanzer();

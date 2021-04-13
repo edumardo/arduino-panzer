@@ -1,5 +1,4 @@
-#include <arduino-timer.h>
-#include "src/main.h"
+#include "src/ArduinoPanzer.h"
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 ArduinoPanzer tank;
 Timer<> APTimer;

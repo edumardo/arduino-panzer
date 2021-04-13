@@ -107,7 +107,6 @@ const uint8_t SMOKE_FAN_MOVING_VOLTAGE_PERCENT =  50;
 // Smoke type: SmokeGeneratorBehaviour::proportional or SmokeGeneratorBehaviour::fixed
 const SmokeGeneratorBehaviour SMOKE_BEHAVIOUR = SmokeGeneratorBehaviour::proportional;
 
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 // Dasmikro TBS Mini sound unit
 //--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -124,6 +123,7 @@ const uint8_t TBSMINI_SOUND_GUN_FIRE         =  3;
 const uint8_t TBSMINI_SOUND_MACHINE_GUN_FIRE =  4;
 const uint8_t TBSMINI_SOUND_VOLUME_UP        = 15;
 const uint8_t TBSMINI_SOUND_VOLUME_DOWN      = 16;
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 // Airsoft gun
 //--------------------------------------------------------------------------------------------------------------------------------------------------
