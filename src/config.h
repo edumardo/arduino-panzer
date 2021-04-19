@@ -8,6 +8,9 @@
 // PS2 Radio
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
+// Miliseconds between reads
+const int PS2_MS_BETWEEN_READS = 50;
+
 // Stick properties
 const int PS2_MIN_STICK_VALUE    =   0;
 const int PS2_CENTER_STICK_VALUE = 128;
