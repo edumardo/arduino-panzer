@@ -4,6 +4,7 @@
 PS2Radio::PS2Radio()
     : Radio() {
 
+    m_msLastRead = PS2_MS_BETWEEN_READS;
 }
 
 void PS2Radio::begin() {
@@ -32,15 +33,19 @@ void PS2Radio::begin() {
 
 void PS2Radio::read() {
 
-    m_ps2x.read_gamepad();
-    m_turretRotation   = m_ps2x.Analog(CONTROLLER_TURRET_ROTATION);
-    m_gunElevation     = m_ps2x.Analog(CONTROLLER_GUN_ELEVATION);
-    m_steeringThrottle = m_ps2x.Analog(CONTROLLER_STEERING_THROTTLE);
-    m_steeringTurn     = m_ps2x.Analog(CONTROLLER_STEERING_TURN);
-    m_driveThrottle    = m_ps2x.Analog(CONTROLLER_DRIVE_THROTTLE);
-    m_driveReverse     = m_ps2x.Analog(CONTROLLER_DRIVE_REVERSE);
-    m_driveLeft        = m_ps2x.Analog(CONTROLLER_DRIVE_LEFT);
-    m_driveRight       = m_ps2x.Analog(CONTROLLER_DRIVE_RIGHT);
+    
+    if (millis() - m_msLastRead > PS2_MS_BETWEEN_READS) {
+        m_msLastRead = millis();
+        m_ps2x.read_gamepad();
+        m_turretRotation   = m_ps2x.Analog(CONTROLLER_TURRET_ROTATION);
+        m_gunElevation     = m_ps2x.Analog(CONTROLLER_GUN_ELEVATION);
+        m_steeringThrottle = m_ps2x.Analog(CONTROLLER_STEERING_THROTTLE);
+        m_steeringTurn     = m_ps2x.Analog(CONTROLLER_STEERING_TURN);
+        m_driveThrottle    = m_ps2x.Analog(CONTROLLER_DRIVE_THROTTLE);
+        m_driveReverse     = m_ps2x.Analog(CONTROLLER_DRIVE_REVERSE);
+        m_driveLeft        = m_ps2x.Analog(CONTROLLER_DRIVE_LEFT);
+        m_driveRight       = m_ps2x.Analog(CONTROLLER_DRIVE_RIGHT);
+    }
 }
 
 bool PS2Radio::button(uint16_t button) {
