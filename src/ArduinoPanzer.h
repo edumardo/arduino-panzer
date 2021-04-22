@@ -25,6 +25,7 @@ class ArduinoPanzer {
         Timer<>           * m_APTimer;
         bool                m_debugMode;
 
+        void initRadio();
         void initDriveDirection();
         void initTurretRotation();
         void initGunElevation();
@@ -36,7 +37,6 @@ class ArduinoPanzer {
         ArduinoPanzer();
         void toggleDebug(bool debugMode);
         void begin(Timer<> * APTimer);
-        void initRadio();
         void readRadio();
         bool foundRadio();
         bool radioButton(uint16_t button);
