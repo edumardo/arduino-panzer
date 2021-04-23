@@ -70,6 +70,14 @@ void printByte(byte b) {
 /**
  *
  */
+void printBool(bool value) {
+
+    Serial.print(value ? "true" : "false");
+}
+
+/**
+ *
+ */
 void printAnalogController(String name, byte x, byte y) {
 
         Serial.print("[");
@@ -96,5 +104,17 @@ void printUDLRController(byte up, byte down, byte left, byte right) {
         printByte(left);
         Serial.print(" | ");
         printByte(right);
+        Serial.print("]");
+}
+
+/**
+ *
+ */
+void printLabelBoolValue(String label, bool value) {
+
+        Serial.print("[");
+        Serial.print(label);
+        Serial.print(" ");
+        printBool(value);
         Serial.print("]");
 }

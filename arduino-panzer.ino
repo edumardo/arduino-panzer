@@ -1,7 +1,7 @@
 #include "src/ArduinoPanzer.h"
+#include <AsyncServoLib.h>
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 ArduinoPanzer tank;
-Timer<> APTimer;
 
 long debounceFireGunTime = 0;
 long debounceStartStopTime = 0;
@@ -14,7 +14,7 @@ void setup() {
 
     delay(300);  //added delay to give wireless ps2 module some time to startup, before configuring it
 
-    tank.begin(&APTimer);
+    tank.begin();
 }
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
@@ -23,8 +23,7 @@ void loop() {
     if (tank.foundRadio() == false)
         return;
 
-    APTimer.tick();
-
+    tank.update();
     tank.readRadio();
 
     /* Turret rotation and gun elevation */
@@ -58,10 +57,10 @@ void loop() {
     }
 
     /* Fire gun */
-    if ((tank.radioButton(CONTROLLER_FIRE_GUN)) && (millis() - debounceFireGunTime > CONTROLLER_MS_DEBOUNCE)) {
+    if ((tank.radioButton(CONTROLLER_FIRE_GUN)) && (millis() - debounceFireGunTime > CONTROLLER_MS_DEBOUNCE) && (tank.recoilGun()->readyToFire())) {
         debounceFireGunTime = millis();
+        tank.recoilGun()->fire();
         tank.soundUnit()->playSound(1);
-
     }
 
     /* Start/stop: engine and smoker */
@@ -80,5 +79,4 @@ void loop() {
         tank.soundUnit()->volumeDown();
     }
 
-    delay(50);
 }

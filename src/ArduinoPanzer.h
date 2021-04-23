@@ -8,7 +8,7 @@
 #include "DriveDirection.h"
 #include "DCMotorController.h"
 #include "SmokeController.h"
-#include "GunController.h"
+#include "RecoilGun.h"
 #include <TBSMini.h>
 #include <arduino-timer.h>
 
@@ -20,7 +20,7 @@ class ArduinoPanzer {
         DCMotorController   m_turretRotation;
         DCMotorController   m_gunElevation;
         SmokeController   * m_smoker;
-        GunController     * m_airsoftGun;
+        RecoilGun         * m_recoilGun;
         TBSMini           * m_soundUnit;
         Timer<>           * m_APTimer;
         bool                m_debugMode;
@@ -30,13 +30,14 @@ class ArduinoPanzer {
         void initTurretRotation();
         void initGunElevation();
         void initSmoker();
-        void initAirsoftGun();
+        void initRecoilGun();
         void initSoundUnit();
 
     public:
         ArduinoPanzer();
         void toggleDebug(bool debugMode);
-        void begin(Timer<> * APTimer);
+        void begin();
+        void update();
         void readRadio();
         bool foundRadio();
         bool radioButton(uint16_t button);
@@ -53,7 +54,7 @@ class ArduinoPanzer {
         DCMotorController turretRotation();
         DCMotorController gunElevation();
         SmokeController * smoker();
-        GunController   * airsoftGun();
+        RecoilGun       * recoilGun();
         TBSMini         * soundUnit();
 };
 
