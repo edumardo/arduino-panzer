@@ -6,9 +6,9 @@
 class GunController {
 
     private:
-        static const int m_delayAirsoftMustBeComplete = 5000;        // Seconds when airsoft shoot must be complete
-        static bool m_isFiring;                                     // To know if gun is firing, i.e., running airsoft motor
-        static bool m_isFired;
+        static const int m_delayAirsoftMustBeComplete = 5000;           // Seconds when airsoft shoot must be complete
+        volatile static bool m_isFiring;                                // To know if gun is firing, i.e., running airsoft motor
+        volatile static bool m_isFired;
         static byte m_airsoftCompleteInterruptPin;
         static Timer<> * m_APTimer;
         static uintptr_t m_taskAirsoftInterrupt;
@@ -26,12 +26,7 @@ class GunController {
         static bool isFired();
         static void readyToFire();
         static void fire();
-        static void postFireActions();
-
 };
 
-//ISR(INT6_vect){
-//    GunController::airsoftISR();
-//}
 
 #endif

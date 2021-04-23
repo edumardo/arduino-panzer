@@ -1,7 +1,7 @@
 #include "GunController.h"
 
-bool GunController::m_isFiring;
-bool GunController::m_isFired;
+volatile bool GunController::m_isFiring;
+volatile bool GunController::m_isFired;
 byte GunController::m_airsoftCompleteInterruptPin;
 Timer<> * GunController::m_APTimer;
 uintptr_t GunController::m_taskAirsoftInterrupt;
@@ -17,7 +17,6 @@ void GunController::begin(Timer<> * APTimer, byte airsoftCompleteInterruptPin) {
     m_APTimer = APTimer;
     m_airsoftCompleteInterruptPin = airsoftCompleteInterruptPin;
     pinMode(m_airsoftCompleteInterruptPin, INPUT_PULLUP);
-    attachInterrupt(digitalPinToInterrupt(m_airsoftCompleteInterruptPin), airsoftISR, CHANGE);
 }
 
 
@@ -27,7 +26,6 @@ bool GunController::isFiring() {
 }
 
 bool GunController::isFired() {
-
     return m_isFired;
 }
 
@@ -38,16 +36,15 @@ void GunController::readyToFire() {
 void GunController::fire() {
 
     startAirsoftMotor();
-    enableAirsoftInterrupt();
     m_taskAirsoftInterrupt = m_APTimer->in(5000, stopAirsoftMotor);
     m_isFiring = true;
+    enableAirsoftInterrupt();
 }
 
 void GunController::startAirsoftMotor() {
 
     Serial.print("START startAirsoftMotor: ");
     Serial.println(millis());
-    digitalWrite(40, HIGH);
 }
 
 bool GunController::stopAirsoftMotor(void *) {
@@ -56,9 +53,7 @@ bool GunController::stopAirsoftMotor(void *) {
     Serial.println(millis());
     Serial.println();
 
-    digitalWrite(40, LOW);
     m_APTimer->cancel(m_taskAirsoftInterrupt);
-
     m_isFiring = false;
     m_isFired = true;
 
@@ -66,13 +61,11 @@ bool GunController::stopAirsoftMotor(void *) {
 }
 void GunController::enableAirsoftInterrupt() {
 
-    //Serial.println("enableAirsoftInterrupt");
-    // activar pin de interrupción que lanza airsoftISR
+    attachInterrupt(digitalPinToInterrupt(m_airsoftCompleteInterruptPin), airsoftISR, CHANGE);
 }
 void GunController::disableAirsoftInterrupt() {
 
-    //Serial.println("disableAirsoftInterrupt");
-    // desactivar pin de interrupción que lanza airsoftISR
+    detachInterrupt(digitalPinToInterrupt(m_airsoftCompleteInterruptPin));
 }
 
 void GunController::airsoftISR(void) {
@@ -81,15 +74,4 @@ void GunController::airsoftISR(void) {
     stopAirsoftMotor((void *) 123);     // Random parameter
     m_isFiring = false;
     m_isFired = true;
-}
-
-void GunController::postFireActions() {
-
-    // si el tanque está parado, retroceso
-
-    // sonido de disparo
-
-    // humo de disparo
-
-    // luces de disparo
 }
