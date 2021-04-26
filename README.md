@@ -14,12 +14,12 @@ Hardware:
 * 3 x TB6612FNG.
 * 1 x Heng Long chassis with gearbox (2 DC motors).
 * 1 x Turret rotation gearbox.
-* 1 x Airsoft gun unit.
+* 1 x MG90S servo for gun recoil.
+* 1 x MG90S servo for gun elevation.
 * 1 x Dasmikro TBS Mini sound unit.
 * 1 x 8 Ohm speaker.
 * 1 x PS2 controller (bluetooth is not necessary).
 * 1 x battery (I'm using a 14.5V 2.15Ah from a robot vacuum cleaner).
-* 1 x 9V battery for arduino standalone power.
 * A lot of jumper wires.
 
 ## Dependencies
@@ -28,6 +28,7 @@ Hardware:
 * [TBSMini](https://github.com/edumardo/TBSMini).
 * [PS2X_lib](https://github.com/madsci1016/Arduino-PS2X).
 * [arduino-timer](https://github.com/contrem/arduino-timer), available in the [library manager](https://www.arduino.cc/en/guide/libraries#).
+* [AsyncServo](https://github.com/luisllamasbinaburo/Arduino-AsyncServo).  available in the [library manager](https://www.arduino.cc/en/guide/libraries#).
 
 ## Features
 
@@ -37,7 +38,7 @@ Hardware:
 | PS2 left analog stick control | ✔️ Done        |            |
 | Turret rotation               | ✔️ Done        |            |
 | Gun elevation                 | ✔️ Done        |            |
-| Airsoft gun shoot             | ⚙️ In progress |            |
+| Airsoft gun shoot             | ⚠️ Pending     |            |
 | Smoke unit                    | ✔️ Done        |            |
 | Sound unit                    | ⚙️ In progress |            |
 | Start / Stop sequence         | ⚙️ In progress |            |

@@ -57,9 +57,9 @@ void loop() {
     }
 
     /* Fire gun */
-    if ((tank.radioButton(CONTROLLER_FIRE_GUN)) && (millis() - debounceFireGunTime > CONTROLLER_MS_DEBOUNCE) && (tank.recoilGun()->readyToFire())) {
+    if ((tank.radioButton(CONTROLLER_FIRE_GUN)) && (millis() - debounceFireGunTime > CONTROLLER_MS_DEBOUNCE) && (tank.gunRecoil()->readyToFire())) {
         debounceFireGunTime = millis();
-        tank.recoilGun()->fire();
+        tank.gunRecoil()->fire();
         tank.soundUnit()->playSound(1);
     }
 
