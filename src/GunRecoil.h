@@ -1,12 +1,12 @@
-#ifndef RECOILGUN_H
-#define RECOILGUN_H
+#ifndef GUNRECOIL_H
+#define GUNRECOIL_H
 
 #include <Arduino.h>
 #include <AsyncServoLib.h>
 #include <arduino-timer.h>
 #include "Gun.h"
 
-class RecoilGun : public Gun {
+class GunRecoil : public Gun {
 
     private:
         static Timer<> * m_APTimer;
@@ -21,7 +21,7 @@ class RecoilGun : public Gun {
         static bool gunReadyTofire(void *);
 
     public:
-        RecoilGun();
+        GunRecoil();
         void begin(Timer<> * APTimer, uint8_t recoilServoPin, uint16_t mSRecoil, uint16_t mSReturn, uint8_t degreesIdle, uint8_t degreesRecoil);
         void update();
         void fire();

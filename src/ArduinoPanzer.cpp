@@ -8,7 +8,7 @@ ArduinoPanzer::ArduinoPanzer() {
 
     m_APTimer = new Timer<>();
     m_smoker = new SmokeController();
-    m_recoilGun = new RecoilGun();
+    m_recoilGun = new GunRecoil();
     m_soundUnit = new TBSMini();
     m_debugMode = false;
 }
@@ -142,5 +142,5 @@ DriveDirection ArduinoPanzer::driveDirection()    { return m_driveDirection; }
 DCMotorController ArduinoPanzer::turretRotation() { return m_turretRotation; }
 DCMotorController ArduinoPanzer::gunElevation()   { return m_gunElevation; }
 SmokeController * ArduinoPanzer::smoker()         { return m_smoker; }
-RecoilGun * ArduinoPanzer::recoilGun()            { return m_recoilGun; }
+GunRecoil * ArduinoPanzer::gunRecoil()            { return m_recoilGun; }
 TBSMini * ArduinoPanzer::soundUnit()              { return m_soundUnit; }

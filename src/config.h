@@ -119,9 +119,9 @@ const SmokeGeneratorBehaviour SMOKE_BEHAVIOUR = SmokeGeneratorBehaviour::proport
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Dasmikro TBS Mini sound unit servo pins
-const uint8_t TBSMINI_PROP1 = 41;
-const uint8_t TBSMINI_PROP2 = 43;
-const uint8_t TBSMINI_PROP3 = 45;
+const uint8_t TBSMINI_PROP1 = 37;
+const uint8_t TBSMINI_PROP2 = 39;
+const uint8_t TBSMINI_PROP3 = 41;
 
 // Sounds asigned to PROP3 input (Coder 12-Key).
 const uint8_t TBSMINI_SOUND_TURRET_ROTATION  =  1;
@@ -141,7 +141,7 @@ const uint8_t AIRSOFT_FIRED_INTERRUPT_PIN = 18;
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 // Recoil gun
 //--------------------------------------------------------------------------------------------------------------------------------------------------
-const uint8_t RECOILGUN_SERVO_PIN      =   48;
+const uint8_t RECOILGUN_SERVO_PIN      =   43;
 const uint8_t RECOILGUN_DEGREES_IDLE   =    0;
 const uint8_t RECOILGUN_DEGREES_RECOIL =   75;
 const uint16_t RECOILGUN_RECOIL_TIME   =  100;

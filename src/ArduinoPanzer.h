@@ -8,7 +8,7 @@
 #include "DriveDirection.h"
 #include "DCMotorController.h"
 #include "SmokeController.h"
-#include "RecoilGun.h"
+#include "GunRecoil.h""
 #include <TBSMini.h>
 #include <arduino-timer.h>
 
@@ -20,7 +20,7 @@ class ArduinoPanzer {
         DCMotorController   m_turretRotation;
         DCMotorController   m_gunElevation;
         SmokeController   * m_smoker;
-        RecoilGun         * m_recoilGun;
+        GunRecoil         * m_recoilGun;
         TBSMini           * m_soundUnit;
         Timer<>           * m_APTimer;
         bool                m_debugMode;
@@ -54,7 +54,7 @@ class ArduinoPanzer {
         DCMotorController turretRotation();
         DCMotorController gunElevation();
         SmokeController * smoker();
-        RecoilGun       * recoilGun();
+        GunRecoil       * gunRecoil();
         TBSMini         * soundUnit();
 };
 

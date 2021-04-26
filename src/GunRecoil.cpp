@@ -1,17 +1,17 @@
-#include "RecoilGun.h"
+#include "GunRecoil.h"
 #include "config.h"
 
-Timer<> * RecoilGun::m_APTimer;
-AsyncServo RecoilGun::m_recoilServo;
-uint16_t RecoilGun::m_mSReturn;
-uint8_t RecoilGun::m_degreesIdle;
+Timer<> * GunRecoil::m_APTimer;
+AsyncServo GunRecoil::m_recoilServo;
+uint16_t GunRecoil::m_mSReturn;
+uint8_t GunRecoil::m_degreesIdle;
 
-RecoilGun::RecoilGun()
+GunRecoil::GunRecoil()
     : Gun() {
 
 }
 
-void RecoilGun::begin(Timer<> * APTimer, uint8_t recoilServoPin, uint16_t mSRecoil, uint16_t mSReturn, uint8_t degreesIdle, uint8_t degreesRecoil) {
+void GunRecoil::begin(Timer<> * APTimer, uint8_t recoilServoPin, uint16_t mSRecoil, uint16_t mSReturn, uint8_t degreesIdle, uint8_t degreesRecoil) {
 
     m_APTimer        = APTimer;
     m_recoilServoPin = recoilServoPin;
@@ -24,23 +24,23 @@ void RecoilGun::begin(Timer<> * APTimer, uint8_t recoilServoPin, uint16_t mSReco
     m_recoilServo.write(m_degreesIdle);
 }
 
-void RecoilGun::update() {
+void GunRecoil::update() {
     m_recoilServo.Update();
 }
 
-void RecoilGun::fire() {
+void GunRecoil::fire() {
 
     m_readyToFire = false;
     m_recoilServo.MoveDegrees(m_degreesRecoil, m_mSRecoil, returnBarrel);
 }
 
-void RecoilGun::returnBarrel() {
+void GunRecoil::returnBarrel() {
 
     m_recoilServo.MoveDegrees(m_degreesIdle, m_mSReturn);
     m_APTimer->in(AP_GUN_RELOAD_TIME, gunReadyTofire);
 }
 
-bool RecoilGun::gunReadyTofire(void *) {
+bool GunRecoil::gunReadyTofire(void *) {
 
     m_readyToFire = true;
     return true;
