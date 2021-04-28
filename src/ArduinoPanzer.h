@@ -7,6 +7,7 @@
 #include "PS2Radio.h"
 #include "DriveDirection.h"
 #include "DCMotorController.h"
+#include "GunElevation.h"
 #include "SmokeController.h"
 #include "GunRecoil.h""
 #include <TBSMini.h>
@@ -18,9 +19,9 @@ class ArduinoPanzer {
         PS2Radio            m_ps2x;
         DriveDirection      m_driveDirection;
         DCMotorController   m_turretRotation;
-        DCMotorController   m_gunElevation;
+        GunElevation      * m_gunElevation;
         SmokeController   * m_smoker;
-        GunRecoil         * m_recoilGun;
+        GunRecoil         * m_gunRecoil;
         TBSMini           * m_soundUnit;
         Timer<>           * m_APTimer;
         bool                m_debugMode;
@@ -52,7 +53,7 @@ class ArduinoPanzer {
         int maxRadioSpeed();
         DriveDirection    driveDirection();
         DCMotorController turretRotation();
-        DCMotorController gunElevation();
+        GunElevation    * gunElevation();
         SmokeController * smoker();
         GunRecoil       * gunRecoil();
         TBSMini         * soundUnit();

@@ -132,19 +132,22 @@ const uint8_t TBSMINI_SOUND_VOLUME_UP        = 15;
 const uint8_t TBSMINI_SOUND_VOLUME_DOWN      = 16;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
-// Airsoft gun
+// Gun recoil
 //--------------------------------------------------------------------------------------------------------------------------------------------------
+const uint8_t  GUNRECOIL_SERVO_PIN      =  43;
+const uint8_t  GUNRECOIL_DEGREES_IDLE   =   0;
+const uint8_t  GUNRECOIL_DEGREES_RECOIL =  75;
+const uint16_t GUNRECOIL_RECOIL_TIME   =  100;
+const uint16_t GUNRECOIL_RETURN_TIME   = 1000;
 
-// Interrupt pin when airsoft mechanism has fired
-const uint8_t AIRSOFT_FIRED_INTERRUPT_PIN = 18;
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------
-// Recoil gun
+// Gun elevation
 //--------------------------------------------------------------------------------------------------------------------------------------------------
-const uint8_t RECOILGUN_SERVO_PIN      =   43;
-const uint8_t RECOILGUN_DEGREES_IDLE   =    0;
-const uint8_t RECOILGUN_DEGREES_RECOIL =   75;
-const uint16_t RECOILGUN_RECOIL_TIME   =  100;
-const uint16_t RECOILGUN_RETURN_TIME   = 1000;
+const uint8_t GUNELEVATION_SERVO_PIN          =  45;
+const int16_t GUNELEVATION_HORIZONTAL_DEGREES =  90;
+const int16_t GUNELEVATION_DEPRESSION_DEGREES = -50;            // Respect to GUNELEVATION_HORIZONTAL_DEGREES
+const int16_t GUNELEVATION_ELEVATION_DEGREES  =  50;            // Respect to GUNELEVATION_HORIZONTAL_DEGREES
+const uint8_t GUNELEVATION_DEGREES_INCREMENT  =   5;
+const int16_t GUNELEVATION_MS_INCREMENT       =  50;
 
 #endif

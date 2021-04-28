@@ -26,15 +26,18 @@ void loop() {
     tank.update();
     tank.readRadio();
 
-    /* Turret rotation and gun elevation */
-    if ((tank.radioTurretRotation() != PS2_CENTER_STICK_VALUE) || (tank.radioGunElevation() != PS2_CENTER_STICK_VALUE)) {
+    /* Turret rotation */
+    if (tank.radioTurretRotation() != PS2_CENTER_STICK_VALUE) {
         tank.turretRotation().move(tank.radioTurretRotation());
-        tank.gunElevation().move(tank.radioGunElevation());
         tank.soundUnit()->playSound(TBSMINI_SOUND_TURRET_ROTATION);
     }
     else {
         tank.turretRotation().disableMotor();
-        tank.gunElevation().disableMotor();
+    }
+
+    /* Gun elevation */
+    if (tank.radioGunElevation() != PS2_CENTER_STICK_VALUE) {
+        tank.gunElevation()->move(tank.radioGunElevation());
     }
 
     /* Analog stick driving */

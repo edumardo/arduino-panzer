@@ -3,6 +3,12 @@
 
 #include <Arduino.h>
 
+typedef struct RadioStickProperties {
+    int minStick;
+    int maxStick;
+    int centerStick;
+};
+
 class Radio {
 
     protected:

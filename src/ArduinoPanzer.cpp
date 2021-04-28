@@ -8,7 +8,8 @@ ArduinoPanzer::ArduinoPanzer() {
 
     m_APTimer = new Timer<>();
     m_smoker = new SmokeController();
-    m_recoilGun = new GunRecoil();
+    m_gunElevation = new GunElevation();
+    m_gunRecoil = new GunRecoil();
     m_soundUnit = new TBSMini();
     m_debugMode = false;
 }
@@ -36,7 +37,8 @@ void ArduinoPanzer::begin() {
 void ArduinoPanzer::update() {
 
     m_APTimer->tick();
-    m_recoilGun->update();
+    m_gunRecoil->update();
+    m_gunElevation->update();
 }
 
 void ArduinoPanzer::initRadio() {
@@ -103,12 +105,14 @@ void ArduinoPanzer::initTurretRotation() {
 
 void ArduinoPanzer::initGunElevation() {
 
-    DCMotorControllerConfig gunElevationConfig = {TB_GUNELEVATION_PWM_PRESCALER, TB_GUNELEVATION_PWM, TB_GUNELEVATION_IN1, TB_GUNELEVATION_IN2, TB_TURRETGUN_STBY};
-    m_gunElevation.begin(gunElevationConfig, m_ps2x.getStickProperties());
-    m_gunElevation.setMaxVoltagePercent(GUNELEVATION_MAX_VOLTAGE_PERCENT);
-
-    if (m_debugMode)
-        m_gunElevation.enableDebug("Gun elevation");
+    GunElevationProperties gunElevationProperties = {
+        GUNELEVATION_DEPRESSION_DEGREES, 
+        GUNELEVATION_ELEVATION_DEGREES, 
+        GUNELEVATION_HORIZONTAL_DEGREES,
+        GUNELEVATION_DEGREES_INCREMENT,
+        GUNELEVATION_MS_INCREMENT};
+    RadioStickProperties RadioStickProperties = {PS2_MIN_STICK_VALUE, PS2_MAX_STICK_VALUE, PS2_CENTER_STICK_VALUE};
+    m_gunElevation->begin(GUNELEVATION_SERVO_PIN, gunElevationProperties, RadioStickProperties);
 }
 
 void ArduinoPanzer::initSmoker() {
@@ -127,7 +131,7 @@ void ArduinoPanzer::initSmoker() {
 
 void ArduinoPanzer::initRecoilGun() {
 
-    m_recoilGun->begin(m_APTimer, RECOILGUN_SERVO_PIN, RECOILGUN_RECOIL_TIME, RECOILGUN_RETURN_TIME, RECOILGUN_DEGREES_IDLE, RECOILGUN_DEGREES_RECOIL);
+    m_gunRecoil->begin(m_APTimer, GUNRECOIL_SERVO_PIN, GUNRECOIL_RECOIL_TIME, GUNRECOIL_RETURN_TIME, GUNRECOIL_DEGREES_IDLE, GUNRECOIL_DEGREES_RECOIL);
 }
 
 void ArduinoPanzer::initSoundUnit() {
@@ -140,7 +144,7 @@ void ArduinoPanzer::initSoundUnit() {
 
 DriveDirection ArduinoPanzer::driveDirection()    { return m_driveDirection; }
 DCMotorController ArduinoPanzer::turretRotation() { return m_turretRotation; }
-DCMotorController ArduinoPanzer::gunElevation()   { return m_gunElevation; }
+GunElevation * ArduinoPanzer::gunElevation()      { return m_gunElevation; }
 SmokeController * ArduinoPanzer::smoker()         { return m_smoker; }
-GunRecoil * ArduinoPanzer::gunRecoil()            { return m_recoilGun; }
+GunRecoil * ArduinoPanzer::gunRecoil()            { return m_gunRecoil; }
 TBSMini * ArduinoPanzer::soundUnit()              { return m_soundUnit; }
