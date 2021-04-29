@@ -19,26 +19,22 @@ SmokeController::SmokeController() {
 /**
  *
  */
-void SmokeController::begin(DCMotorControllerConfig smokerGeneratorConfig, DCMotorControllerConfig smokerFanConfig , SmokeGeneratorBehaviour behaviour) {
+void SmokeController::begin(DCMotorControllerProperties smokerGeneratorProperties, DCMotorControllerProperties smokerFanProperties, SmokeGeneratorBehaviour behaviour) {
 
     m_behaviour = behaviour;
-    m_pwmGeneratorPin = smokerGeneratorConfig.pwmPin;
-    m_in1GeneratorPin = smokerGeneratorConfig.in1Pin;
-    m_in2GeneratorPin = smokerGeneratorConfig.in2Pin;
-    m_standbyPin = smokerGeneratorConfig.standbyPin;
-    m_pwmFanPin = smokerFanConfig.pwmPin;
-    m_in1FanPin = smokerFanConfig.in1Pin;
-    m_in2FanPin = smokerFanConfig.in2Pin;
-    pinMode(m_pwmFanPin, OUTPUT);
-    pinMode(m_in1GeneratorPin, OUTPUT);
-    pinMode(m_in2GeneratorPin, OUTPUT);
-    pinMode(m_standbyPin, OUTPUT);
-    pinMode(m_pwmFanPin, OUTPUT);
-    pinMode(m_in1FanPin, OUTPUT);
-    pinMode(m_in2FanPin, OUTPUT);
+    m_smokerGeneratorProperties = smokerGeneratorProperties;
+    m_smokerFanProperties = smokerFanProperties;
+
+    pinMode(m_smokerGeneratorProperties.pwmPin, OUTPUT);
+    pinMode(m_smokerGeneratorProperties.in1Pin, OUTPUT);
+    pinMode(m_smokerGeneratorProperties.in2Pin, OUTPUT);
+    pinMode(m_smokerGeneratorProperties.standbyPin, OUTPUT);
+    pinMode(m_smokerFanProperties.pwmPin, OUTPUT);
+    pinMode(m_smokerFanProperties.in1Pin, OUTPUT);
+    pinMode(m_smokerFanProperties.in2Pin, OUTPUT);
     disable();
-    setPWMPrescaler(m_pwmGeneratorPin, smokerGeneratorConfig.pwmPrescaler);
-    setPWMPrescaler(m_pwmFanPin, smokerFanConfig.pwmPrescaler);
+    setPWMPrescaler(m_smokerGeneratorProperties.pwmPin, m_smokerGeneratorProperties.pwmPrescaler);
+    setPWMPrescaler(m_smokerFanProperties.pwmPin, m_smokerFanProperties.pwmPrescaler);
 }
 
 /**
@@ -158,10 +154,10 @@ void SmokeController::proportionalSmoke(byte speed) {
  */
 void SmokeController::setGeneratorSpeed(byte pwmGenerator) {
 
-    digitalWrite(m_in1GeneratorPin, HIGH);
-    digitalWrite(m_in2GeneratorPin, LOW);
-    digitalWrite(m_standbyPin, HIGH);
-    analogWrite(m_pwmGeneratorPin, pwmGenerator);
+    digitalWrite(m_smokerGeneratorProperties.in1Pin, HIGH);
+    digitalWrite(m_smokerGeneratorProperties.in2Pin, LOW);
+    digitalWrite(m_smokerGeneratorProperties.standbyPin, HIGH);
+    analogWrite(m_smokerGeneratorProperties.pwmPin, pwmGenerator);
 }
 
 /**
@@ -169,10 +165,10 @@ void SmokeController::setGeneratorSpeed(byte pwmGenerator) {
  */
 void SmokeController::setFanSpeed(byte pwmFan) {
 
-    digitalWrite(m_in1FanPin, HIGH);
-    digitalWrite(m_in2FanPin, LOW);
-    digitalWrite(m_standbyPin, HIGH);
-    analogWrite(m_pwmFanPin, pwmFan);
+    digitalWrite(m_smokerFanProperties.in1Pin, HIGH);
+    digitalWrite(m_smokerFanProperties.in2Pin, LOW);
+    digitalWrite(m_smokerFanProperties.standbyPin, HIGH);
+    analogWrite(m_smokerFanProperties.pwmPin, pwmFan);
 }
 
 /**
@@ -180,13 +176,13 @@ void SmokeController::setFanSpeed(byte pwmFan) {
  */
 void SmokeController::disable() {
 
-    digitalWrite(m_in1GeneratorPin, LOW);
-    digitalWrite(m_in2GeneratorPin, LOW);
-    analogWrite(m_pwmGeneratorPin, 0);
-    digitalWrite(m_in1FanPin, LOW);
-    digitalWrite(m_in2FanPin, LOW);
-    analogWrite(m_pwmFanPin, 0);
-    digitalWrite(m_standbyPin, LOW);
+    digitalWrite(m_smokerGeneratorProperties.in1Pin, LOW);
+    digitalWrite(m_smokerGeneratorProperties.in2Pin, LOW);
+    analogWrite(m_smokerGeneratorProperties.pwmPin, 0);
+    digitalWrite(m_smokerFanProperties.in1Pin, LOW);
+    digitalWrite(m_smokerFanProperties.in2Pin, LOW);
+    analogWrite(m_smokerFanProperties.pwmPin, 0);
+    digitalWrite(m_smokerGeneratorProperties.standbyPin, LOW);
 }
 
 /**

@@ -28,8 +28,7 @@ void ArduinoPanzer::begin() {
     initTurretRotation();
     initGunElevation();
     initDriveDirection();
-    //initAirsoftGun();
-    initRecoilGun();
+    initGunRecoil();
     initSoundUnit();
     initSmoker();
 }
@@ -43,7 +42,8 @@ void ArduinoPanzer::update() {
 
 void ArduinoPanzer::initRadio() {
 
-    m_ps2x.begin();
+    RadioStickProperties radioStickProperties = {PS2_MIN_STICK_VALUE, PS2_MAX_STICK_VALUE, PS2_CENTER_STICK_VALUE, true};
+    m_ps2x.begin(radioStickProperties);
 }
 
 void ArduinoPanzer::readRadio() {
@@ -83,10 +83,9 @@ int ArduinoPanzer::maxRadioSpeed(){
 
 void ArduinoPanzer::initDriveDirection() {
 
-    DCMotorControllerConfig leftMotorConfig = {TB_DRIVE_APWM_PRESCALER, TB_DRIVE_APWM, TB_DRIVE_AIN1, TB_DRIVE_AIN2, TB_DRIVE_STBY};
-    DCMotorControllerConfig rightMotorConfig = {TB_DRIVE_BPWM_PRESCALER, TB_DRIVE_BPWM, TB_DRIVE_BIN1, TB_DRIVE_BIN2, TB_DRIVE_STBY};
+    DCMotorControllerProperties leftMotorConfig = {TB_DRIVE_APWM_PRESCALER, TB_DRIVE_APWM, TB_DRIVE_AIN1, TB_DRIVE_AIN2, TB_DRIVE_STBY};
+    DCMotorControllerProperties rightMotorConfig = {TB_DRIVE_BPWM_PRESCALER, TB_DRIVE_BPWM, TB_DRIVE_BIN1, TB_DRIVE_BIN2, TB_DRIVE_STBY};
     m_driveDirection.begin(leftMotorConfig, rightMotorConfig, m_ps2x.getStickProperties());
-    m_driveDirection.invertYStick();
     m_driveDirection.setMaxVoltagePercentAnalogMove(DRIVE_MAX_VOLTAGE_PERCENT_ANALOG);
     m_driveDirection.setMaxVoltagePercentPadMove(DRIVE_MAX_VOLTAGE_PERCENT_PAD);
 
@@ -95,7 +94,7 @@ void ArduinoPanzer::initDriveDirection() {
 
 void ArduinoPanzer::initTurretRotation() {
 
-    DCMotorControllerConfig turretRotationConfig {TB_TURRETROTATION_PWM_PRESCALER, TB_TURRETROTATION_PWM, TB_TURRETROTATION_IN1, TB_TURRETROTATION_IN2, TB_TURRETGUN_STBY};
+    DCMotorControllerProperties turretRotationConfig {TB_TURRETROTATION_PWM_PRESCALER, TB_TURRETROTATION_PWM, TB_TURRETROTATION_IN1, TB_TURRETROTATION_IN2, TB_TURRETROTATION_STBY};
     m_turretRotation.begin(turretRotationConfig, m_ps2x.getStickProperties());
     m_turretRotation.setMaxVoltagePercent(TURRETROTARION_MAX_VOLTAGE_PERCENT);
 
@@ -106,19 +105,20 @@ void ArduinoPanzer::initTurretRotation() {
 void ArduinoPanzer::initGunElevation() {
 
     GunElevationProperties gunElevationProperties = {
+        GUNELEVATION_SERVO_PIN,
         GUNELEVATION_DEPRESSION_DEGREES, 
         GUNELEVATION_ELEVATION_DEGREES, 
         GUNELEVATION_HORIZONTAL_DEGREES,
         GUNELEVATION_DEGREES_INCREMENT,
         GUNELEVATION_MS_INCREMENT};
     RadioStickProperties RadioStickProperties = {PS2_MIN_STICK_VALUE, PS2_MAX_STICK_VALUE, PS2_CENTER_STICK_VALUE};
-    m_gunElevation->begin(GUNELEVATION_SERVO_PIN, gunElevationProperties, RadioStickProperties);
+    m_gunElevation->begin(gunElevationProperties, RadioStickProperties);
 }
 
 void ArduinoPanzer::initSmoker() {
 
-    DCMotorControllerConfig smokerGeneratorConfig = {TB_SMOKE_GENERATOR_PWM_PRESCALER, TB_SMOKE_GENERATOR_PWM, TB_SMOKE_GENERATOR_AIN1, TB_SMOKE_GENERATOR_AIN2, TB_SMOKE_GENERATORFAN_STBY};
-    DCMotorControllerConfig smokerFanConfig = {TB_SMOKE_FAN_PWM_PRESCALER, TB_SMOKE_FAN_PWM, TB_SMOKE_FAN_IN1, TB_SMOKE_FAN_IN2, TB_SMOKE_GENERATORFAN_STBY};
+    DCMotorControllerProperties smokerGeneratorConfig = {TB_SMOKE_GENERATOR_PWM_PRESCALER, TB_SMOKE_GENERATOR_PWM, TB_SMOKE_GENERATOR_AIN1, TB_SMOKE_GENERATOR_AIN2, TB_SMOKE_GENERATORFAN_STBY};
+    DCMotorControllerProperties smokerFanConfig = {TB_SMOKE_FAN_PWM_PRESCALER, TB_SMOKE_FAN_PWM, TB_SMOKE_FAN_IN1, TB_SMOKE_FAN_IN2, TB_SMOKE_GENERATORFAN_STBY};
     m_smoker->begin(smokerGeneratorConfig, smokerFanConfig, SMOKE_BEHAVIOUR);
     m_smoker->setGeneratorVoltagesPercent(SMOKE_GENERATOR_MAX_VOLTAGE_PERCENT, SMOKE_GENERATOR_IDLE_VOLTAGE_PERCENT, SMOKE_GENERATOR_MOVING_VOLTAGE_PERCENT);
     m_smoker->setFanVoltagesPercent(SMOKE_FAN_MAX_VOLTAGE_PERCENT, SMOKE_FAN_IDLE_VOLTAGE_PERCENT, SMOKE_FAN_MOVING_VOLTAGE_PERCENT);
@@ -129,9 +129,10 @@ void ArduinoPanzer::initSmoker() {
         m_smoker->enableDebug();
 }
 
-void ArduinoPanzer::initRecoilGun() {
+void ArduinoPanzer::initGunRecoil() {
 
-    m_gunRecoil->begin(m_APTimer, GUNRECOIL_SERVO_PIN, GUNRECOIL_RECOIL_TIME, GUNRECOIL_RETURN_TIME, GUNRECOIL_DEGREES_IDLE, GUNRECOIL_DEGREES_RECOIL);
+    GunRecoilProperties recoilProperties = {GUNRECOIL_SERVO_PIN, GUNRECOIL_RECOIL_TIME, GUNRECOIL_RETURN_TIME, GUNRECOIL_DEGREES_IDLE, GUNRECOIL_DEGREES_RECOIL};
+    m_gunRecoil->begin(m_APTimer, recoilProperties);
 }
 
 void ArduinoPanzer::initSoundUnit() {

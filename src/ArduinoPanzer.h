@@ -9,9 +9,13 @@
 #include "DCMotorController.h"
 #include "GunElevation.h"
 #include "SmokeController.h"
-#include "GunRecoil.h""
+#include "GunRecoil.h"
 #include <TBSMini.h>
 #include <arduino-timer.h>
+#include "RadioStickProperties.h"
+#include "GunElevationProperties.h"
+#include "DCMotorControllerProperties.h"
+#include "GunRecoilProperties.h"
 
 class ArduinoPanzer {
 
@@ -31,7 +35,7 @@ class ArduinoPanzer {
         void initTurretRotation();
         void initGunElevation();
         void initSmoker();
-        void initRecoilGun();
+        void initGunRecoil();
         void initSoundUnit();
 
     public:

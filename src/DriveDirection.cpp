@@ -5,7 +5,6 @@
  */
 DriveDirection::DriveDirection() {
 
-    m_invertYStick = false;
     m_analogMovePercent = 100;
     m_padMovePercent = 100;
     m_diffSteer.begin(m_pivotYLimit);
@@ -16,16 +15,15 @@ DriveDirection::DriveDirection() {
 /**
  *
  */
-void DriveDirection::begin(DCMotorControllerConfig leftMotorConfig, DCMotorControllerConfig rightMotorConfig, int stickProperties[3]){
+void DriveDirection::begin(DCMotorControllerProperties leftMotorConfig, DCMotorControllerProperties rightMotorConfig, RadioStickProperties radioStickProperties){
 
-    m_stickMinValue = stickProperties[0];
-    m_stickMaxValue = stickProperties[1];
-    
-    int leftMotorStickProperties[3] = {m_invertYStick ? m_diffSteerComputeRange : -m_diffSteerComputeRange, m_invertYStick ? -m_diffSteerComputeRange : m_diffSteerComputeRange, 0};
+    m_radioStickProperties = radioStickProperties;
+
+    RadioStickProperties leftMotorStickProperties = {m_radioStickProperties.invertYStick ? m_diffSteerComputeRange : -m_diffSteerComputeRange, m_radioStickProperties.invertYStick ? -m_diffSteerComputeRange : m_diffSteerComputeRange, 0};
     m_leftMotor.begin(leftMotorConfig, leftMotorStickProperties);
     m_leftMotor.setMaxVoltagePercent(m_analogMovePercent);
     
-    int  rightMotorStickProperties[3] = {m_invertYStick ? m_diffSteerComputeRange : -m_diffSteerComputeRange, m_invertYStick ? -m_diffSteerComputeRange : m_diffSteerComputeRange, 0};
+    RadioStickProperties rightMotorStickProperties = {m_radioStickProperties.invertYStick ? m_diffSteerComputeRange : -m_diffSteerComputeRange, m_radioStickProperties.invertYStick ? -m_diffSteerComputeRange : m_diffSteerComputeRange, 0};
     m_rightMotor.begin(rightMotorConfig, rightMotorStickProperties);
     m_rightMotor.setMaxVoltagePercent(m_analogMovePercent);
 }
@@ -41,16 +39,16 @@ void DriveDirection::move(byte stickValueX, byte stickValueY) {
 
     m_diffSteer.computeMotors(
         map(stickValueX,
-            m_stickMinValue,
-            m_stickMaxValue,
+            m_radioStickProperties.minValue,
+            m_radioStickProperties.maxValue,
             -m_diffSteerComputeRange,
             m_diffSteerComputeRange)
         ,
         map(stickValueY,
-            m_stickMinValue,
-            m_stickMaxValue,
-            m_invertYStick ? m_diffSteerComputeRange : -m_diffSteerComputeRange,
-            m_invertYStick ? -m_diffSteerComputeRange : m_diffSteerComputeRange)
+            m_radioStickProperties.minValue,
+            m_radioStickProperties.maxValue,
+            m_radioStickProperties.invertYStick ? m_diffSteerComputeRange : -m_diffSteerComputeRange,
+            m_radioStickProperties.invertYStick ? -m_diffSteerComputeRange : m_diffSteerComputeRange)
         );
 
     m_leftMotor.setMaxVoltagePercent(m_analogMovePercent);
@@ -109,14 +107,6 @@ void DriveDirection::setMaxVoltagePercentAnalogMove(byte analogMovePercent) {
 void DriveDirection::setMaxVoltagePercentPadMove(byte padMovePercent) {
 
     m_padMovePercent = padMovePercent;
-}
-
-/**
- *
- */
-void DriveDirection::invertYStick() {
-
-    m_invertYStick = true;
 }
 
 /**

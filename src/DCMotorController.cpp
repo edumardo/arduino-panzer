@@ -19,24 +19,17 @@ DCMotorController::DCMotorController() {
 /**
  *
  */
-void DCMotorController::begin(DCMotorControllerConfig motorConfig, int stickProperties[3]) {
+void DCMotorController::begin(DCMotorControllerProperties motorControllerProperties, RadioStickProperties radioStickProperties) {
 
-    m_pwmPrescaler = motorConfig.pwmPrescaler;
-    m_pwmPin = motorConfig.pwmPin;
-    m_in1Pin = motorConfig.in1Pin;
-    m_in2Pin = motorConfig.in2Pin;
-    m_standbyPin = motorConfig.standbyPin;
+    m_motorProperties = motorControllerProperties;
+    m_radioStickProperties = radioStickProperties;
 
-    m_stickMinValue = stickProperties[0];
-    m_stickMaxValue = stickProperties[1];
-    m_stickCenterValue = stickProperties[2];
-
-    pinMode(m_pwmPin, OUTPUT);
-    pinMode(m_in1Pin, OUTPUT);
-    pinMode(m_in2Pin, OUTPUT);
-    pinMode(m_standbyPin, OUTPUT);
+    pinMode(m_motorProperties.pwmPin, OUTPUT);
+    pinMode(m_motorProperties.in1Pin, OUTPUT);
+    pinMode(m_motorProperties.in2Pin, OUTPUT);
+    pinMode(m_motorProperties.standbyPin, OUTPUT);
     disableMotor();
-    setPWMPrescaler(m_pwmPin, m_pwmPrescaler);
+    setPWMPrescaler(m_motorProperties.pwmPin, m_motorProperties.pwmPrescaler);
 }
 
 /**
@@ -57,7 +50,7 @@ void DCMotorController::setMaxVoltagePercent(uint8_t percent) {
  */
 void DCMotorController::enableMotor() {
 
-    digitalWrite(m_standbyPin, HIGH);
+    digitalWrite(m_motorProperties.standbyPin, HIGH);
 }
 
 /**
@@ -65,10 +58,10 @@ void DCMotorController::enableMotor() {
  */
 void DCMotorController::disableMotor() {
 
-    digitalWrite(m_pwmPin, 0);
-    digitalWrite(m_in1Pin, LOW);
-    digitalWrite(m_in2Pin, LOW);
-    digitalWrite(m_standbyPin, LOW);
+    digitalWrite(m_motorProperties.pwmPin, 0);
+    digitalWrite(m_motorProperties.in1Pin, LOW);
+    digitalWrite(m_motorProperties.in2Pin, LOW);
+    digitalWrite(m_motorProperties.standbyPin, LOW);
 }
 
 /**
@@ -76,21 +69,21 @@ void DCMotorController::disableMotor() {
  */
 void DCMotorController::move(int stickValue) {
 
-    if (stickValue == m_stickCenterValue) return;
+    if (stickValue == m_radioStickProperties.centerValue) return;
 
-    digitalWrite(m_in1Pin, (stickValue < m_stickCenterValue) ? LOW : HIGH);
-    digitalWrite(m_in2Pin, (stickValue < m_stickCenterValue) ? HIGH : LOW);
-    int pwmSpeed = abs(map(stickValue, m_stickMinValue, m_stickMaxValue, -255, 255));
+    digitalWrite(m_motorProperties.in1Pin, (stickValue < m_radioStickProperties.centerValue) ? LOW : HIGH);
+    digitalWrite(m_motorProperties.in2Pin, (stickValue < m_radioStickProperties.centerValue) ? HIGH : LOW);
+    int pwmSpeed = abs(map(stickValue, m_radioStickProperties.minValue , m_radioStickProperties.maxValue , -255, 255));
     int pwmSpeedPercent = pwmSpeed * m_maxVoltagePercent / 100;
     enableMotor();
-    analogWrite(m_pwmPin, pwmSpeedPercent);
+    analogWrite(m_motorProperties.pwmPin, pwmSpeedPercent);
 
     if (m_debugMode) {
 
         printDEC("stickValue", stickValue);
         Serial.print("[");
         Serial.print(m_debugName);
-        if (stickValue < m_stickCenterValue)
+        if (stickValue < m_radioStickProperties.centerValue)
             Serial.print(" left");
         else
             Serial.print(" right");

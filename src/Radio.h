@@ -2,17 +2,12 @@
 #define RADIO_H
 
 #include <Arduino.h>
-
-typedef struct RadioStickProperties {
-    int minStick;
-    int maxStick;
-    int centerStick;
-};
+#include "RadioStickProperties.h"
 
 class Radio {
 
     protected:
-        int m_stickProperties[3];
+        RadioStickProperties m_stickProperties;
         int m_turretRotation;
         int m_gunElevation;
         int m_steeringThrottle;
@@ -26,14 +21,14 @@ class Radio {
 
     public:
         Radio();
-        virtual void begin() = 0;
+        virtual void begin(RadioStickProperties radioStickProperties) = 0;
         virtual bool isOnline() = 0;
         virtual void read() = 0;
         virtual bool button(uint16_t button) = 0;
         virtual void printDebug() = 0;
         int maxSpeed();
         void toggleDebugMode(bool debugMode);
-        int * getStickProperties();
+        RadioStickProperties getStickProperties();
         int getTurretRotation();
         int getGunElevation();
         int getSteeringThrottle();

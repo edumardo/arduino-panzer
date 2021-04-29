@@ -2,34 +2,22 @@
 #define DCMOTORCONTROLLER_H
 
 #include <Arduino.h>
-
-typedef struct DCMotorControllerConfig {
-    int pwmPrescaler;
-    uint8_t pwmPin;
-    uint8_t in1Pin;
-    uint8_t in2Pin;
-    uint8_t standbyPin;
-};
+#include "RadioStickProperties.h"
+#include "DCMotorControllerProperties.h"
 
 class DCMotorController {
 
     private:
         bool m_debugMode;
-        int m_stickMinValue;
-        int m_stickMaxValue;
-        int m_stickCenterValue;
-        int m_pwmPrescaler;
-        uint8_t m_pwmPin;
-        uint8_t m_in1Pin;
-        uint8_t m_in2Pin;
-        uint8_t m_standbyPin;
+        RadioStickProperties m_radioStickProperties;
+        DCMotorControllerProperties m_motorProperties;
         uint8_t m_maxVoltagePercent;
         String m_debugName;
         void printDEC(String label, int value);
 
     public:
         DCMotorController();
-        void begin(DCMotorControllerConfig motorConfig, int stickProperties[3]);
+        void begin(DCMotorControllerProperties motorControllerProperties, RadioStickProperties radioStickProperties);
         void move(int stickValue);
         void setMaxVoltagePercent(uint8_t percent);
         void enableMotor();

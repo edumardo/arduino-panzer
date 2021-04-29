@@ -3,29 +3,21 @@
 
 #include <Arduino.h>
 #include <AsyncServoLib.h>
-#include "Radio.h"
-
-typedef struct GunElevationProperties {
-    int16_t depressionDegrees;
-    int16_t elevationDegrees;
-    int16_t horizontalDegrees;
-    uint8_t degreesIncrement;
-    int16_t mSIncrement;
-};
+#include "RadioStickProperties.h"
+#include "GunElevationProperties.h"
 
 class GunElevation {
 
     private:
-        AsyncServo m_elevationServo;
-        uint8_t m_elevationServoPin;
-        int16_t  m_position;
-        GunElevationProperties m_elevationProperties;
-        RadioStickProperties m_radioStickProperties;
+        int16_t m_position;
         long m_debounceMoveTime;
+        AsyncServo m_elevationServo;
+        RadioStickProperties m_radioStickProperties;
+        GunElevationProperties m_elevationProperties;
 
     public:
         GunElevation();
-        void begin(uint8_t elevationServoPin, GunElevationProperties gunElevationProperties, RadioStickProperties radioStickProperties);
+        void begin(GunElevationProperties gunElevationProperties, RadioStickProperties radioStickProperties);
         void update();
         void move(int stickValue);
 };

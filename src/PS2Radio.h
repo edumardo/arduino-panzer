@@ -14,7 +14,7 @@ class PS2Radio: public Radio {
 
     public:
         PS2Radio();
-        void begin();
+        void begin(RadioStickProperties radioStickProperties);
         bool isOnline();
         void read();
         bool button(uint16_t button);

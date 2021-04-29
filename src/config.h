@@ -13,12 +13,12 @@ const uint16_t AP_GUN_RELOAD_TIME = 2000;
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
 // Miliseconds between reads
-const int PS2_MS_BETWEEN_READS = 50;
+const uint8_t PS2_MS_BETWEEN_READS = 50;
 
 // Stick properties
-const int PS2_MIN_STICK_VALUE    =   0;
-const int PS2_CENTER_STICK_VALUE = 128;
-const int PS2_MAX_STICK_VALUE    = 255;
+const int16_t PS2_MIN_STICK_VALUE    =   0;
+const int16_t PS2_CENTER_STICK_VALUE = 128;
+const int16_t PS2_MAX_STICK_VALUE    = 255;
 
 // PS2 pins
 const uint8_t PS2_DAT =   A2;
@@ -47,21 +47,22 @@ const bool PS2_RUMBLE     = true;
 #define CONTROLLER_VOLUMEDOWN            PSB_R2
 
 // Miliseconds to debounce buttons
-const int CONTROLLER_MS_DEBOUNCE = 500;
+const uint16_t CONTROLLER_MS_DEBOUNCE = 500;
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 // Drive direction
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
 // TB6612FNG Drive pins
-const uint8_t TB_DRIVE_APWM_PRESCALER =  1;
-const uint8_t TB_DRIVE_APWM           =  9;
-const uint8_t TB_DRIVE_AIN2           = 23;
-const uint8_t TB_DRIVE_AIN1           = 25;
-const uint8_t TB_DRIVE_STBY           = 27;
-const uint8_t TB_DRIVE_BIN1           = 29;
-const uint8_t TB_DRIVE_BIN2           = 31;
-const uint8_t TB_DRIVE_BPWM           = 10;
-const uint8_t TB_DRIVE_BPWM_PRESCALER =  1;
+const uint8_t  TB_DRIVE_APWM_PRESCALER =  1;
+const uint8_t  TB_DRIVE_APWM           =  9;
+const uint8_t  TB_DRIVE_AIN2           = 23;
+const uint8_t  TB_DRIVE_AIN1           = 25;
+const uint8_t  TB_DRIVE_STBY           = 27;
+const uint8_t  TB_DRIVE_BIN1           = 29;
+const uint8_t  TB_DRIVE_BIN2           = 31;
+const uint8_t  TB_DRIVE_BPWM           = 10;
+const uint16_t TB_DRIVE_BPWM_PRESCALER =  1;
 
 // Max voltage percent sent to drive
 const uint8_t DRIVE_MAX_VOLTAGE_PERCENT_ANALOG = 100;
@@ -72,15 +73,11 @@ const uint8_t DRIVE_MAX_VOLTAGE_PERCENT_PAD    =  80;
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
 // TB6612FNG Turret rotation and gun elevation pins
-const uint8_t TB_TURRETROTATION_PWM_PRESCALER =  1;
-const uint8_t TB_TURRETROTATION_PWM           = 11;
-const uint8_t TB_TURRETROTATION_IN2           = 22;
-const uint8_t TB_TURRETROTATION_IN1           = 24;
-const uint8_t TB_TURRETGUN_STBY               = 26;
-const uint8_t TB_GUNELEVATION_IN1             = 28;
-const uint8_t TB_GUNELEVATION_IN2             = 30;
-const uint8_t TB_GUNELEVATION_PWM             = 12;
-const uint8_t TB_GUNELEVATION_PWM_PRESCALER   =  1;
+const uint16_t TB_TURRETROTATION_PWM_PRESCALER =  1;
+const uint8_t  TB_TURRETROTATION_PWM           = 11;
+const uint8_t  TB_TURRETROTATION_IN2           = 22;
+const uint8_t  TB_TURRETROTATION_IN1           = 24;
+const uint8_t  TB_TURRETROTATION_STBY          = 26;
 
 // Max voltage percent sent to rotation and elevation motors
 const uint8_t TURRETROTARION_MAX_VOLTAGE_PERCENT = 100;
@@ -91,15 +88,15 @@ const uint8_t GUNELEVATION_MAX_VOLTAGE_PERCENT   = 100;
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
 // TB6612FNG Smoke generator and fan pins
-const uint8_t TB_SMOKE_GENERATOR_PWM_PRESCALER =  1;
-const uint8_t TB_SMOKE_GENERATOR_PWM           =  2;
-const uint8_t TB_SMOKE_GENERATOR_AIN2          = 32;
-const uint8_t TB_SMOKE_GENERATOR_AIN1          = 33;
-const uint8_t TB_SMOKE_GENERATORFAN_STBY       = 34;
-const uint8_t TB_SMOKE_FAN_IN1                 = 35;
-const uint8_t TB_SMOKE_FAN_IN2                 = 36;
-const uint8_t TB_SMOKE_FAN_PWM                 =  3;
-const uint8_t TB_SMOKE_FAN_PWM_PRESCALER       =  1;
+const uint16_t TB_SMOKE_GENERATOR_PWM_PRESCALER =  1;
+const uint8_t  TB_SMOKE_GENERATOR_PWM           =  2;
+const uint8_t  TB_SMOKE_GENERATOR_AIN2          = 32;
+const uint8_t  TB_SMOKE_GENERATOR_AIN1          = 33;
+const uint8_t  TB_SMOKE_GENERATORFAN_STBY       = 34;
+const uint8_t  TB_SMOKE_FAN_IN1                 = 35;
+const uint8_t  TB_SMOKE_FAN_IN2                 = 36;
+const uint8_t  TB_SMOKE_FAN_PWM                 =  3;
+const uint16_t TB_SMOKE_FAN_PWM_PRESCALER       =  1;
 
 // Max, idle, moving voltage percents sent to smoke generator, suitable for fixed or proportional behaviour
 const uint8_t SMOKE_GENERATOR_MAX_VOLTAGE_PERCENT    = 100;

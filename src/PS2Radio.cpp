@@ -7,11 +7,9 @@ PS2Radio::PS2Radio()
     m_msLastRead = PS2_MS_BETWEEN_READS;
 }
 
-void PS2Radio::begin() {
+void PS2Radio::begin(RadioStickProperties radioStickProperties) {
 
-    m_stickProperties[0] = PS2_MIN_STICK_VALUE;
-    m_stickProperties[1] = PS2_MAX_STICK_VALUE;
-    m_stickProperties[2] = PS2_CENTER_STICK_VALUE;
+    m_stickProperties = radioStickProperties;
 
     m_ps2xConfigError = m_ps2x.config_gamepad(PS2_CLK, PS2_CMD, PS2_SEL, PS2_DAT, PS2_PRESSURES, PS2_RUMBLE);
     if (m_ps2xConfigError == 0) {
