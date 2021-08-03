@@ -15,6 +15,9 @@ const uint16_t AP_GUN_RELOAD_TIME = 2000;
 // Miliseconds between reads
 const uint8_t PS2_MS_BETWEEN_READS = 50;
 
+// Milisecond to debound buttons
+const uint16_t PS2_MS_DEBOUNCE = 500;
+
 // Stick properties
 const int16_t PS2_MIN_STICK_VALUE    =   0;
 const int16_t PS2_CENTER_STICK_VALUE = 128;
@@ -28,7 +31,11 @@ const uint8_t PS2_CLK =   A3;
 const bool PS2_PRESSURES  = true;
 const bool PS2_RUMBLE     = true;
 
-// PS2 button abstraction
+//--------------------------------------------------------------------------------------------------------------------------------------------------
+// Radio controller
+//--------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Radio button abstraction
 #define CONTROLLER_TURRET_ROTATION       PSS_RX
 #define CONTROLLER_GUN_ELEVATION         PSS_RY
 #define CONTROLLER_STEERING_THROTTLE     PSS_LX
@@ -47,7 +54,7 @@ const bool PS2_RUMBLE     = true;
 #define CONTROLLER_VOLUMEDOWN            PSB_R2
 
 // Miliseconds to debounce buttons
-const uint16_t CONTROLLER_MS_DEBOUNCE = 500;
+const uint16_t CONTROLLER_MS_DEBOUNCE = PS2_MS_DEBOUNCE;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 // Drive direction
