@@ -11,7 +11,6 @@
 #include "SmokeController.h"
 #include "GunRecoil.h"
 #include <TBSMini.h>
-#include <arduino-timer.h>
 #include "RadioStickProperties.h"
 #include "GunElevationProperties.h"
 #include "DCMotorControllerProperties.h"
