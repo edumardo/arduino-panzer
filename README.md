@@ -4,6 +4,12 @@ Because buying one was too easy, better build and program it yourself!
 
 This project aims to control a RC tank using a programmable board, arduino, and implement the main features of other commercial products such as Heng Long, Toro or Taigen: classic movement, turret rotation, gun elevation, sound, smoke, lights etc.
 
+## How it works?
+
+You can see test videos of implemented features [here](https://www.youtube.com/playlist?list=PLfADmksLEUYKfFm-LOJsjtZ3TI8cin0g5).
+
+[![](http://img.youtube.com/vi/NVqAsgg3tQk/0.jpg)](http://www.youtube.com/watch?v=NVqAsgg3tQk "driving test")
+
 ## Parts
 
 Currently I have a heng long chassis with gearbox (2 DC motors), turret rotation gearbox, airsoft gun unit, sound unit and smoke generator. I control it with a bluetooth ps2 controller and several TB6612FNG drivers. See the wiring-diagram for more details.
@@ -70,9 +76,3 @@ PWMs:
 | <= 24     | 1, 5       | 11, 12, 44, 45, 46          |
 | <= 36     | 1, 3, 5    | 2, 3, 5, 11, 12, 44, 45, 46 |
 | <= 48     | 1, 3, 4, 5 | All                         |
-
-## How it works?
-
-You can see test videos of implemented features [here](https://www.youtube.com/playlist?list=PLfADmksLEUYKfFm-LOJsjtZ3TI8cin0g5).
-
-[![](http://img.youtube.com/vi/NVqAsgg3tQk/0.jpg)](http://www.youtube.com/watch?v=NVqAsgg3tQk "driving test")
