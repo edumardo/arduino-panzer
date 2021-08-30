@@ -4,7 +4,6 @@
 PS2Radio::PS2Radio()
     : Radio() {
 
-    m_msLastRead = 0;
 }
 
 void PS2Radio::begin(RadioStickProperties radioStickProperties) {
@@ -31,7 +30,6 @@ void PS2Radio::begin(RadioStickProperties radioStickProperties) {
 
 void PS2Radio::read() {
 
-    
     if (millis() - m_msLastRead > PS2_MS_BETWEEN_READS) {
         m_msLastRead = millis();
         m_ps2x.read_gamepad();
