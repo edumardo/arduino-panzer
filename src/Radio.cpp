@@ -3,6 +3,7 @@
 Radio::Radio(){
 
     m_debugMode = false;
+    m_msLastRead = 0;
 }
 
 int Radio::maxSpeed(){
