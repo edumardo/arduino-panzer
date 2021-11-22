@@ -17,7 +17,7 @@ class Radio {
         int m_driveLeft;
         int m_driveRight;
         bool m_debugMode;
-        long m_msLastRead;
+        unsigned long m_msLastRead;
 
     public:
         Radio();
@@ -37,6 +37,7 @@ class Radio {
         int getDriveReverse();
         int getDriveLeft();
         int getDriveRight();
+        void resetData();
 };
 
 #endif
