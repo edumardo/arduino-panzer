@@ -1,6 +1,7 @@
 #ifndef nRFRadio_h
 #define nRFRadio_h
 
+#include "config.h"
 #include "Radio.h"
 #include <SPI.h>
 #include <nRF24L01.h>
