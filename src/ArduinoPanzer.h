@@ -5,6 +5,7 @@
 #include "config.h"
 #include <arduino-timer.h>
 #include "PS2Radio.h"
+#include "nRF24Radio.h"
 #include "DriveDirection.h"
 #include "DCMotorController.h"
 #include "GunElevation.h"
@@ -19,7 +20,7 @@
 class ArduinoPanzer {
 
     private:
-        PS2Radio            m_ps2x;
+        nRF24Radio          m_nRF24;
         DriveDirection      m_driveDirection;
         DCMotorController   m_turretRotation;
         GunElevation      * m_gunElevation;

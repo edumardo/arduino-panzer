@@ -15,7 +15,7 @@ const uint16_t AP_GUN_RELOAD_TIME = 2000;
 // Miliseconds between reads
 const uint8_t PS2_MS_BETWEEN_READS = 50;
 
-// Milisecond to debound buttons
+// Milisecond to debounce buttons
 const uint16_t PS2_MS_DEBOUNCE = 500;
 
 // Stick properties
@@ -30,6 +30,25 @@ const uint8_t PS2_SEL =   A0;
 const uint8_t PS2_CLK =   A3;
 const bool PS2_PRESSURES  = true;
 const bool PS2_RUMBLE     = true;
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------
+// nRF24 Radio
+//--------------------------------------------------------------------------------------------------------------------------------------------------
+
+// Miliseconds between reads
+const uint8_t NRF24_MS_BETWEEN_READS = 50;
+
+// Max miliseconds between reads to detect lost connection
+const uint16_t NRF24_MS_MAX_TIME_BETWEEN_READS = 1000;
+
+// Stick properties
+const int16_t NRF24_MIN_STICK_VALUE    =    0;
+const int16_t NRF24_CENTER_STICK_VALUE =  512;
+const int16_t NRF24_MAX_STICK_VALUE    = 1023;
+
+// NRF24 module pins
+const uint8_t NRF24_CE  = 49;
+const uint8_t NRF24_CSN = 53;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 // Radio controller

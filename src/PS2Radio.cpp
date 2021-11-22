@@ -26,12 +26,17 @@ void PS2Radio::begin(RadioStickProperties radioStickProperties) {
         case 2: Serial.print("GuitarHero Controller found "); break;
         case 3: Serial.print("Wireless Sony DualShock Controller found "); break;
     }
+
+    resetData();
 }
 
 void PS2Radio::read() {
 
-    if (millis() - m_msLastRead > PS2_MS_BETWEEN_READS) {
-        m_msLastRead = millis();
+    unsigned long msCurrentTime = millis();
+    unsigned long msSinceLastRead = msCurrentTime - m_msLastRead;
+
+    if (msSinceLastRead > PS2_MS_BETWEEN_READS) {
+        m_msLastRead = msCurrentTime;
         m_ps2x.read_gamepad();
         m_turretRotation   = m_ps2x.Analog(CONTROLLER_TURRET_ROTATION);
         m_gunElevation     = m_ps2x.Analog(CONTROLLER_GUN_ELEVATION);
