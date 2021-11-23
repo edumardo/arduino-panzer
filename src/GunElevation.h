@@ -10,7 +10,7 @@ class GunElevation {
 
     private:
         int16_t m_position;
-        long m_debounceMoveTime;
+        unsigned long m_debounceMoveTime;
         AsyncServo m_elevationServo;
         RadioStickProperties m_radioStickProperties;
         GunElevationProperties m_elevationProperties;
