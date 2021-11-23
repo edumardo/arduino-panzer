@@ -10,7 +10,7 @@ void nRF24Radio::begin(RadioStickProperties radioStickProperties)
 {
     uint8_t RF24_ADDRESS[6] = "AP-TX";
 
-    m_stickProperties = radioStickProperties;
+    Radio::begin(radioStickProperties);
     m_radio.begin();
     m_radio.openReadingPipe(1, RF24_ADDRESS);
     m_radio.startListening();
