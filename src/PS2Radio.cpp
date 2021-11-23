@@ -8,7 +8,7 @@ PS2Radio::PS2Radio()
 
 void PS2Radio::begin(RadioStickProperties radioStickProperties) {
 
-    Radio::begin(m_stickProperties);
+    m_stickProperties = radioStickProperties;
 
     m_ps2xConfigError = m_ps2x.config_gamepad(PS2_CLK, PS2_CMD, PS2_SEL, PS2_DAT, PS2_PRESSURES, PS2_RUMBLE);
     if (m_ps2xConfigError == 0) {
