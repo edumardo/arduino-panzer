@@ -75,6 +75,12 @@ const uint8_t NRF24_CSN = 53;
 // Miliseconds to debounce buttons
 const uint16_t CONTROLLER_MS_DEBOUNCE = PS2_MS_DEBOUNCE;
 
+// Selected radio type
+#define RADIO_PS2_TYPE      1
+#define RADIO_NRF24_TYPE    2
+
+#define SELECTED_RADIO_TYPE RADIO_PS2_TYPE
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 // Drive direction
 //--------------------------------------------------------------------------------------------------------------------------------------------------

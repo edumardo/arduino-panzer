@@ -20,7 +20,7 @@
 class ArduinoPanzer {
 
     private:
-        nRF24Radio          m_nRF24;
+        Radio             * m_radio;
         DriveDirection      m_driveDirection;
         DCMotorController   m_turretRotation;
         GunElevation      * m_gunElevation;
