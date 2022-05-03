@@ -6,7 +6,16 @@
 #include <SPI.h>
 #include <nRF24L01.h>
 #include <RF24.h>
-#include <DataPacket.h>                     // https://github.com/edumardo/arduino-panzer-tx
+//#include <DataPacket.h>                     // https://github.com/edumardo/arduino-panzer-tx
+
+struct DataPacket {
+    uint16_t lx;        //  2
+    uint16_t ly;        //  2
+    bool     lb;        //  1
+    uint16_t rx;        //  2
+    uint16_t ry;        //  2
+    bool     rb;        //  1
+};
 
 class nRF24Radio : public Radio {
 

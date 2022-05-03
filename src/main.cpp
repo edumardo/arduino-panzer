@@ -1,5 +1,7 @@
-#include "src/ArduinoPanzer.h"
-#include <AsyncServoLib.h>
+#include <Arduino.h>
+
+#include <ArduinoPanzer.h>
+#include "AsyncServoLib.h"
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 ArduinoPanzer tank;
 

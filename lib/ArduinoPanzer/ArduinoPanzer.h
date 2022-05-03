@@ -2,7 +2,7 @@
 #define ARDUINOPANZER_H
 
 #include <Arduino.h>
-#include "config.h"
+#include <Config.h>
 #include <arduino-timer.h>
 #include "PS2Radio.h"
 #include "nRF24Radio.h"
@@ -16,6 +16,7 @@
 #include "GunElevationProperties.h"
 #include "DCMotorControllerProperties.h"
 #include "GunRecoilProperties.h"
+#include <Radio.h>
 
 class ArduinoPanzer {
 
