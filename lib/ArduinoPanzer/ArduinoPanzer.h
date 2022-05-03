@@ -1,11 +1,10 @@
 #ifndef ARDUINOPANZER_H
 #define ARDUINOPANZER_H
 
-#include <Arduino.h>
+//#include <Arduino.h>
 #include <Config.h>
 #include <arduino-timer.h>
 #include "PS2Radio.h"
-#include "nRF24Radio.h"
 #include "DriveDirection.h"
 #include "DCMotorController.h"
 #include "GunElevation.h"

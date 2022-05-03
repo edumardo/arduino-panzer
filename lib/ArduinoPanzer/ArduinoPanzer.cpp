@@ -6,12 +6,7 @@
  */
 ArduinoPanzer::ArduinoPanzer()
 {
-
-#ifdef SELECTED_RADIO_TYPE
     m_radio = new PS2Radio();
-#else
-    m_radio = new nRF24Radio();
-#endif
     m_APTimer = new Timer<>();
     m_smoker = new SmokeController();
     m_gunElevation = new GunElevation();
@@ -157,9 +152,9 @@ void ArduinoPanzer::initGunElevation()
 
     RadioStickProperties RadioStickProperties =
     {
-        NRF24_MIN_STICK_VALUE,
-        NRF24_MAX_STICK_VALUE,
-        NRF24_CENTER_STICK_VALUE
+        PS2_MIN_STICK_VALUE,
+        PS2_MAX_STICK_VALUE,
+        PS2_CENTER_STICK_VALUE
     };
 
     m_gunElevation->begin(gunElevationProperties, RadioStickProperties);
@@ -188,7 +183,7 @@ void ArduinoPanzer::initSmoker()
     m_smoker->begin(smokerGeneratorConfig, smokerFanConfig, SMOKE_BEHAVIOUR);
     m_smoker->setGeneratorVoltagesPercent(SMOKE_GENERATOR_MAX_VOLTAGE_PERCENT, SMOKE_GENERATOR_IDLE_VOLTAGE_PERCENT, SMOKE_GENERATOR_MOVING_VOLTAGE_PERCENT);
     m_smoker->setFanVoltagesPercent(SMOKE_FAN_MAX_VOLTAGE_PERCENT, SMOKE_FAN_IDLE_VOLTAGE_PERCENT, SMOKE_FAN_MOVING_VOLTAGE_PERCENT);
-    m_smoker->setProportional(NRF24_CENTER_STICK_VALUE, abs(NRF24_MAX_STICK_VALUE));
+    m_smoker->setProportional(PS2_CENTER_STICK_VALUE, abs(PS2_MAX_STICK_VALUE));
     m_smoker->idle(); // necesary?
 
     if (m_debugMode)
@@ -211,7 +206,7 @@ void ArduinoPanzer::initGunRecoil()
 
 void ArduinoPanzer::initSoundUnit()
 {
-    m_soundUnit->begin(m_APTimer, TBSMINI_PROP1, TBSMINI_PROP2, TBSMINI_PROP3, NRF24_CENTER_STICK_VALUE, NRF24_MAX_STICK_VALUE);
+    m_soundUnit->begin(m_APTimer, TBSMINI_PROP1, TBSMINI_PROP2, TBSMINI_PROP3, PS2_CENTER_STICK_VALUE, PS2_MAX_STICK_VALUE);
 
     if (m_debugMode)
         m_soundUnit->enableDebug();

@@ -32,25 +32,6 @@ const bool PS2_PRESSURES  = true;
 const bool PS2_RUMBLE     = true;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------
-// nRF24 Radio
-//--------------------------------------------------------------------------------------------------------------------------------------------------
-
-// Miliseconds between reads
-const uint8_t NRF24_MS_BETWEEN_READS = 50;
-
-// Max miliseconds between reads to detect lost connection
-const uint16_t NRF24_MS_MAX_TIME_BETWEEN_READS = 1000;
-
-// Stick properties
-const int16_t NRF24_MIN_STICK_VALUE    =    0;
-const int16_t NRF24_CENTER_STICK_VALUE =  512;
-const int16_t NRF24_MAX_STICK_VALUE    = 1023;
-
-// NRF24 module pins
-const uint8_t NRF24_CE  = 49;
-const uint8_t NRF24_CSN = 53;
-
-//--------------------------------------------------------------------------------------------------------------------------------------------------
 // Radio controller
 //--------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -77,7 +58,6 @@ const uint16_t CONTROLLER_MS_DEBOUNCE = PS2_MS_DEBOUNCE;
 
 // Selected radio type
 #define RADIO_PS2_TYPE      1
-#define RADIO_NRF24_TYPE    2
 
 #define SELECTED_RADIO_TYPE RADIO_PS2_TYPE
 
